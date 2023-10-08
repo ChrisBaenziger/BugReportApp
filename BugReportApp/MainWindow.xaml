@@ -1,0 +1,115 @@
+﻿<Window x:Class="BugReportApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BugReportApp"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Bug report Manager" Height="700" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="70" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="35" />
+            <RowDefinition />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+        
+        <!-- Main Menu -->
+        <Menu Grid.Row="0" Padding="20px 0px">
+            <MenuItem x:Name="mnuFile" Header="File">
+                <MenuItem x:Name="mnuExit" Header="Exit"></MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="mnuEdit" Header="Edt">
+                <MenuItem x:Name="mnuPreferences" Header="Preferences"></MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="mnuHelp" Header="Help">
+                <MenuItem x:Name="mnuAbout" Header="About"></MenuItem>
+            </MenuItem>
+        </Menu> <!-- End Main Menu Section -->
+
+        <!-- Login Section -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="250px"/>
+                <ColumnDefinition Width="250px"/>
+                <ColumnDefinition Width="125px"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="lblGreeting" Content="You are not logged in." 
+                   Padding="20px 5px 20px 0px" Grid.Column="1" Grid.RowSpan="2" Margin="5px" FontWeight="Bold"
+                   VerticalContentAlignment="Center" 
+                   HorizontalContentAlignment="Left" FontSize="20"  />
+            <!-- Email Address -->
+            <Label Grid.Column="2" Grid.Row="0"
+                   x:Name="lblEmailAddress"
+                   Content="Email Address: "
+                   VerticalAlignment="Top" FontWeight="Bold"
+                   HorizontalContentAlignment="Right" />
+            <TextBox Grid.Column="3" Grid.Row="0" 
+                     x:Name="txtEmailAddress"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"
+                     Padding="5px" Margin="3px"/>
+            <!-- Password -->
+            <Label Grid.Column="2" Grid.Row="1"
+                   x:Name="lblPassword"
+                   Content="Password: "
+                   VerticalAlignment="Top" FontWeight="Bold"
+                   HorizontalContentAlignment="Right" />
+            <PasswordBox Grid.Column="3" Grid.Row="1" 
+                     x:Name="pwdPassword"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"
+                     Padding="5px" Margin="3px"/>
+            
+            <!-- Login Button -->
+            <Button Grid.Column="4" Grid.Row="0" 
+                    x:Name="btnLogin" Content="Log In"
+                    Margin="5px" FontWeight="Bold" Background="Blue" Foreground="AliceBlue" />
+        </Grid> <!-- End Login Section -->
+
+        <!-- Main Tabs -->
+        <TabControl x:Name="tabsetMain" Grid.Row="3">
+            <TabItem x:Name="tabRental" Header="Segways for Rent">
+                <Label Content="Rental Tab" />
+            </TabItem>
+            <TabItem x:Name="tabTour" Header="Upcoming Tours">
+                <Label Content="Tour Tab" />
+            </TabItem>
+            <TabItem x:Name="tabCheckIn" Header="Segways to Return">
+                <Label Content="Check In Tab" />
+            </TabItem>
+            <TabItem x:Name="tabPrep" Header="Segways to be Prepped">
+                <Label Content="Prep Tab" />
+            </TabItem>
+            <TabItem x:Name="tabMaintenance" Header="Maintenance List">
+                <Label Content="Maintenance Tab" />
+            </TabItem>
+            <TabItem x:Name="tabManager" Header="Inventory Management">
+                <Label Content="Manager Tab" />
+            </TabItem>
+            <TabItem x:Name="tabAdmin" Header="Administration">
+                <Label Content="Admin Tab" />
+            </TabItem>
+            <TabItem x:Name="tabSettings" Header="Settings">
+                <Label Content="Settings" />
+            </TabItem>
+        </TabControl> <!-- End Main Tabs Section -->
+
+        <!-- Status Bar Section -->
+        <StatusBar Grid.Row="6">
+            <StatusBarItem x:Name="statMessage" 
+                           Content="Welcome. Please log in to continue."
+                           Padding="20px, 0px" />
+        </StatusBar> <!-- End Status Bar Section -->
+    </Grid>
+</Window>
