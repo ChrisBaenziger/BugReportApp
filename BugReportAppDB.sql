@@ -207,7 +207,7 @@ INSERT INTO [dbo].[Employee]
         ([GivenName], [FamilyName], [Address1], [Address2], [City], [State], [Zip], [PhoneNumber], [Email])
     VALUES
         ('Chris', 'Baenziger', '229 Nielsen Hall', null, 'Cedar Rapids', 'IA', '52405', '3193101111', 'christopher-baenziger@student.kirkwood.edu'),
-        ('Jim', 'Glasgow', '229 Nielsen Hall', null, 'Cedar Rapids', 'IA', '52405', '3103102222','jim-glasgow@kirkwood.edu');
+        ('Jim', 'Glasgow', '229 Nielsen Hall', null, 'Cedar Rapids', 'IA', '52405', '3103102222','Jim.Glasgow@kirkwood.edu');
 GO
 
 print '' print '*** creating role table ***'
@@ -237,7 +237,8 @@ print '' print '*** creating employee role table ***'
 GO
 CREATE TABLE [dbo].[EmployeeRole] (
 	[EmployeeID]	[int]						NOT NULL,
-	[RoleID]		[nvarchar](50)				NOT NULL
+	[RoleID]		[nvarchar](50)				NOT NULL,
+    [Active]    [bit]                       NOT NULL DEFAULT 1
 	
 	CONSTRAINT [pk_EmployeeRole_EmployeeID] FOREIGN KEY([EmployeeID])
 		REFERENCES [dbo].[Employee]([EmployeeID]),
@@ -422,6 +423,23 @@ AS
 	END
 GO
 
+print '' print '*** creating sp_authenticate_customer ***'
+GO
+CREATE PROCEDURE [dbo].[sp_authenticate_customer]
+(
+	@Email			[nvarchar](100),
+	@PasswordHash	[nvarchar](100)
+)
+AS
+	BEGIN
+		SELECT 	COUNT([CustomerID]) as 'Authenticated'
+		FROM	[Customer]
+		WHERE	@Email = [Email]
+			AND @PasswordHash = [PasswordHash]
+			AND [Active] = 1
+	END
+GO
+
 print '' print '*** creating sp_select_employee_by_email ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_employee_by_email]
@@ -433,6 +451,21 @@ AS
 		SELECT	[EmployeeID], [GivenName], [FamilyName], [PhoneNumber],
 					[Email], [Active]
 		FROM	[Employee]
+		WHERE	@Email = [Email]
+	END
+GO
+
+print '' print '*** creating sp_select_customer_by_email ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_customer_by_email]
+(
+	@Email				[nvarchar](100)
+)
+AS
+	BEGIN
+		SELECT	[EmployeeID], [GivenName], [FamilyName], [PhoneNumber],
+					[Email], [Active]
+		FROM	[Customer]
 		WHERE	@Email = [Email]
 	END
 GO
@@ -451,9 +484,9 @@ AS
 	END
 GO
 
-print '' print '*** creating sp_update_passwordHash ***'
+print '' print '*** creating sp_update_employee_passwordHash ***'
 GO
-CREATE PROCEDURE [dbo].[sp_update_passwordHash]
+CREATE PROCEDURE [dbo].[sp_update_employee_passwordHash]
 (
 	@Email				[nvarchar](100),
 	@NewPasswordHash	[nvarchar](100),
@@ -462,6 +495,24 @@ CREATE PROCEDURE [dbo].[sp_update_passwordHash]
 AS
 	BEGIN
 		UPDATE		[Employee]
+		SET			[PasswordHash] = @NewPasswordHash
+		WHERE		@Email = [Email]
+			AND		@OldPasswordHash = [PasswordHash]
+		RETURN 		@@ROWCOUNT
+	END
+GO
+
+print '' print '*** creating sp_update_customer_passwordHash ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_customer_passwordHash]
+(
+	@Email				[nvarchar](100),
+	@NewPasswordHash	[nvarchar](100),
+	@OldPasswordHash	[nvarchar](100)
+)
+AS
+	BEGIN
+		UPDATE		[Customer]
 		SET			[PasswordHash] = @NewPasswordHash
 		WHERE		@Email = [Email]
 			AND		@OldPasswordHash = [PasswordHash]
@@ -819,9 +870,9 @@ AS
             [City] = @City,
             [State] = @State,
             [Zip] = @Zip,
-            [PhoneNumber] = @PhoneNumber
+            [PhoneNumber] = @PhoneNumber,
             [Email] = @Email
-        WHERE   @BugTicketID = [BugTicketID]
+        WHERE   @EmployeeID = [EmployeeID]
             AND @GivenName = [GivenName]
             AND @FamilyName = [FamilyName]
             AND @Address1 = [Address1]
@@ -880,12 +931,12 @@ CREATE PROCEDURE [dbo].[sp_delete_employee_by_employeeID]
     @State              [nvarchar](2),
     @Zip                [nvarchar](10),
     @PhoneNumber        [nvarchar](11),
-    @Email              [nvarchar](150),
+    @Email              [nvarchar](150)
 )
 AS
     BEGIN
         DELETE FROM [Employee]
-        WHERE   @BugTicketID = [BugTicketID]
+        WHERE   @EmployeeID = [EmployeeID]
             AND @GivenName = [GivenName]
             AND @FamilyName = [FamilyName]
             AND @Address1 = [Address1]
@@ -901,139 +952,604 @@ GO
 
 /* Role CRUD */
 
-print '' print '*** creating sp_create_ ***'
+print '' print '*** creating sp_create_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_create_role]
+(
+    @RoleID     [nvarchar](50)
+)
+AS
+    BEGIN
+        INSERT INTO [Role]
+                ([RoleID])
+            VALUES
+                (@RoleID)
+        RETURN @@ROWCOUNT
+    END
 GO
  
-print '' print '*** creating sp_update_ ***'
+print '' print '*** creating sp_update_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_role]
+(
+    @OldRoleID      [nvarchar](50),
+    @OldActive      [bit],
+    @NewRoleID      [nvarchar](50),
+    @NewActive      [bit]
+)
+AS
+    BEGIN
+        UPDATE [Role]
+        SET [RoleID] = @NewRoleID,
+            [Active] = @NewActive
+        WHERE @OldRoleID = [RoleID]
+            AND @OldActive = [Active]
+        RETURN @@ROWCOUNT
+    END
 GO
 
-print '' print '*** creating sp_select_ ***'
+print '' print '*** creating sp_select_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_role]
+(
+    @RoleID     [nvarchar](50)
+)
+AS
+    BEGIN
+        SELECT [RoleID], [Active]
+        FROM [Role]
+        WHERE [RoleID] = @RoleID
+    END
 GO
 
-print '' print '*** creating sp_deactivate_ ***'
+print '' print '*** creating sp_deactivate_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_role]
+(
+    @RoleID     [nvarchar](50)
+)
+AS
+    BEGIN
+        UPDATE [Role]
+        SET [Active] = 0
+        WHERE @RoleID = [RoleID]
+        RETURN @@ROWCOUNT
+    END
 GO
 
-print '' print '*** creating sp_delete_ ***'
+print '' print '*** creating sp_delete_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_role]
+(
+    @RoleID     [nvarchar](50),
+    @Active     [bit]
+)
+AS
+    BEGIN
+        DELETE FROM [Role]
+        WHERE [RoleID] = @RoleID
+            AND [Active] = @Active
+        RETURN @@ROWCOUNT
+    END
 GO
 
 /* Employee Role CRUD */
 
-print '' print '*** creating sp_create_ ***'
+print '' print '*** creating sp_create_employee_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_create_employee_role]
+(
+    @EmployeeID     [int],
+    @RoleID         [nvarchar](50)
+)
+AS
+    BEGIN
+        INSERT INTO [EmployeeRole]
+                ([EmployeeID], [RoleID])
+            VALUES
+                (@EmployeeID, @RoleID)
+        RETURN @@ROWCOUNT
+    END
 GO
 
-print '' print '*** creating sp_update_ ***'
+print '' print '*** creating sp_update_employee_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_employee_role]
+(
+    @OldEmployeeID     [int],
+    @OldRoleID         [nvarchar](50),
+    @NewEmployeeID     [int],
+    @NewRoleID         [nvarchar](50)
+)
+AS
+    BEGIN
+        UPDATE [EmployeeRole]
+        SET [EmployeeID] = @NewEmployeeID,
+            [RoleID] = @NewRoleID
+        WHERE @OldEmployeeID = [EmployeeID]
+            AND @OldRoleID = [RoleID]
+        RETURN @@ROWCOUNT
+    END
 GO
 
-print '' print '*** creating sp_select_ ***'
+print '' print '*** creating sp_select_employee_role_by_employeeID ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_employee_role_by_employeeID]
+(
+    @EmployeeID     [int]
+)
+AS
+    BEGIN
+        SELECT [EmployeeID], [RoleID]
+        FROM [EmployeeRole]
+        WHERE [EmployeeID] = @EmployeeID
+    END
 GO
 
-print '' print '*** creating sp_deactivate_ ***'
+print '' print '*** creating sp_deactivate_employee_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_employee_role]
+(
+    @EmployeeID     [int]
+)
+AS
+    BEGIN
+        UPDATE [EmployeeRole]
+        SET [Active] = 0
+        WHERE @EmployeeID = [EmployeeID]
+        RETURN @@ROWCOUNT
+    END
 GO
 
-print '' print '*** creating sp_delete_ ***'
+print '' print '*** creating sp_delete_employee_role ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_employee_role]
+(
+    @EmployeeID     [int],
+    @RoleID         [nvarchar](50),
+    @Active         [bit]
+)
+AS
+    BEGIN
+        DELETE FROM [EmployeeRole]
+        WHERE [EmployeeID] = @EmployeeID
+            AND [RoleID] = @RoleID
+            AND [Active] = @Active
+        RETURN @@ROWCOUNT
+    END
 GO
 
 /* Customer stored procedures */
 
-print '' print '*** creating sp_create_ ***'
+print '' print '*** creating sp_create_customer ***'
+GO
+CREATE PROCEDURE [dbo].[sp_create_customer]
+(
+	@GivenName		[nvarchar](50),
+	@FamilyName     [nvarchar](100),
+    @Address1       [nvarchar](50),
+    @Address2       [nvarchar](50),
+    @City           [nvarchar](100),
+    @State          [nvarchar](2),
+    @Zip            [nvarchar](10),
+	@PhoneNumber	[nvarchar](11),
+	@Email			[nvarchar](150),
+    @VersionNumber  [nvarchar](16)
+)
+AS
+    BEGIN
+        INSERT INTO [Customer]
+                ([GivenName], [FamilyName], [Address1], [Address2], [City], [State], [Zip], [PhoneNumber], [Email], [VersionNumber])
+            VALUES
+                (@GivenName, @FamilyName, @Address1, @Address2, @City, @State, @Zip, @PhoneNumber, @Email, @VersionNumber)
+        RETURN [CustomerID]
+    END
 GO
 
-print '' print '*** creating sp_update_ ***'
+print '' print '*** creating sp_update_customer ***'
+GO
+CREATE PROCEDURE [dbo].[sp_update_customer]
+(
+    @CustomerID         [int],
+    @OldGivenName		[nvarchar](50),
+	@OldFamilyName      [nvarchar](100),
+    @OldAddress1        [nvarchar](50),
+    @OldAddress2        [nvarchar](50),
+    @OldCity            [nvarchar](100),
+    @OldState           [nvarchar](2),
+    @OldZip             [nvarchar](10),
+	@OldPhoneNumber	    [nvarchar](11),
+	@OldEmail			[nvarchar](150),
+    @OldVersionNumber   [nvarchar](16),
+    @OldActive          [bit],
+
+    @NewGivenName		[nvarchar](50),
+	@NewFamilyName      [nvarchar](100),
+    @NewAddress1        [nvarchar](50),
+    @NewAddress2        [nvarchar](50),
+    @NewCity            [nvarchar](100),
+    @NewState           [nvarchar](2),
+    @NewZip             [nvarchar](10),
+	@NewPhoneNumber	    [nvarchar](11),
+	@NewEmail			[nvarchar](150),
+    @NewVersionNumber   [nvarchar](16),
+    @NewActive          [bit]
+)
+AS
+    BEGIN
+        UPDATE [Customer]
+        SET [GivenName] = @NewGivenName,
+            [FamilyName] = @NewFamilyName,
+            [Address1] = @NewAddress1,
+            [Address2] = @NewAddress2,
+            [City] = @NewCity,
+            [State] = @NewState,
+            [Zip] = @NewZip,
+            [PhoneNumber] = @NewPhoneNumber,
+            [Email] = @NewEmail,
+            [VersionNumber] = @NewVersionNumber,
+            [Active] = @NewActive
+        WHERE @CustomerID = [CustomerID]
+            AND @OldGivenName = [GivenName]
+            AND @OldFamilyName = [FamilyName]
+            AND @OldAddress1 = [Address1]
+            AND @OldAddress2 = [Address2]
+            AND @OldCity = [City]
+            AND @OldState = [State]
+            AND @OldZip = [Zip]
+            AND @OldPhoneNumber = [PhoneNumber]
+            AND @OldEmail = [Email]
+            AND @OldVersionNumber = [VersionNumber] 
+            AND @OldActive = [Active]
+        RETURN @@ROWCOUNT
+    END
 GO
 
-print '' print '*** creating sp_select_ ***'
+print '' print '*** creating sp_select_customer ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_customer]
+(
+
+)
+AS
+    BEGIN
+
+    END
 GO
 
-print '' print '*** creating sp_deactivate_ ***'
+print '' print '*** creating sp_deactivate_customer ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_customer]
+(
+
+)
+AS
+    BEGIN
+
+    END
 GO
 
-print '' print '*** creating sp_delete_ ***'
+print '' print '*** creating sp_delete_customer ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_customer]
+(
+
+)
+AS
+    BEGIN
+
+    END
 GO
 
 /* Computer Information CRUD */
 
 print '' print '*** creating sp_create_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_update_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_select_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_deactivate_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_delete_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 /* Bug Status CRUD */
 
 print '' print '*** creating sp_create_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_update_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_select_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_deactivate_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_delete_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 /* Product Version CRUD */
 
 print '' print '*** creating sp_create_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_update_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_select_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_deactivate_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_delete_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 /* Product Area CRUD*/
 
 print '' print '*** creating sp_create_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_update_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_select_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_deactivate_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_delete_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 /* Feature CRUD */
 
 print '' print '*** creating sp_create_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_update_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_select_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_deactivate_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 print '' print '*** creating sp_delete_ ***'
 GO
+-- CREATE PROCEDURE [dbo].[sp_]
+-- (
+
+-- )
+-- AS
+--     BEGIN
+
+--     END
+-- GO
 
 /* Bug Ticket Archive CRUD */
 
