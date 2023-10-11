@@ -53,30 +53,6 @@ Table Create Order
     BugTicketArchive
 */
 
-/*
-print '' print '*** creating  table ***'
-GO
-CREATE TABLE [dbo].[] (
-
-
-    CONSTRAINT [pk_] PRIMARY KEY ([]),
-    CONSTRAINT [fk_] FOREIGN KEY ([])
-        REFERENCES [dbo].[] ([]),
-    CONSTRAINT [] UNIQUE ([])
-);
-GO
-
-
-print '' print '*** insterting  ***'
-GO
-INSERT INTO [dbo].[]
-        ([])
-    VALUES
-        (),
-        ();
-GO
-*/
-
 print '' print '*** creating bug status table ***'
 GO
 CREATE TABLE [dbo].[BugStatus] (
@@ -305,7 +281,8 @@ CREATE TABLE [dbo].[ComputerInformation] (
     [GraphicsCard]      [nvarchar](100) NULL,
     [RamType]           [nvarchar](100) NULL,
     [RamGB]             [decimal]       NULL,
-    [IPAddress]         [nvarchar](16)  NULL   
+    [IPAddress]         [nvarchar](16)  NULL,
+    [Active]            [bit]           NOT NULL DEFAULT 1  
 
     CONSTRAINT [pk_ComputerInformation] PRIMARY KEY ([CustomerID]),
 );
@@ -463,7 +440,7 @@ CREATE PROCEDURE [dbo].[sp_select_customer_by_email]
 )
 AS
 	BEGIN
-		SELECT	[EmployeeID], [GivenName], [FamilyName], [PhoneNumber],
+		SELECT	[CustomerID], [GivenName], [FamilyName], [PhoneNumber],
 					[Email], [Active]
 		FROM	[Customer]
 		WHERE	@Email = [Email]
@@ -830,6 +807,7 @@ AS
             VALUES
                 (@GivenName, @FamilyName, @Address1, @Address2, @City, 
                 @State, @Zip, @PhoneNumber, @Email)
+        RETURN @@IDENTITY
     END
 GO
 
@@ -899,7 +877,6 @@ AS
         FROM [Employee]
         WHERE   @EmployeeID = [EmployeeID]
             AND [Active] = 1
-
     END
 GO
 
@@ -1142,7 +1119,7 @@ AS
                 ([GivenName], [FamilyName], [Address1], [Address2], [City], [State], [Zip], [PhoneNumber], [Email], [VersionNumber])
             VALUES
                 (@GivenName, @FamilyName, @Address1, @Address2, @City, @State, @Zip, @PhoneNumber, @Email, @VersionNumber)
-        RETURN [CustomerID]
+        RETURN @@IDENTITY
     END
 GO
 
@@ -1205,15 +1182,63 @@ AS
     END
 GO
 
-print '' print '*** creating sp_select_customer ***'
+print '' print '*** creating sp_select_customer_by_customerID ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_customer]
+CREATE PROCEDURE [dbo].[sp_select_customer_by_customerID]
 (
-
+    @CustomerID     [int]
 )
 AS
     BEGIN
+        SELECT [CustomerID], [GivenName], [FamilyName], [Address1], [Address2],
+            [City], [State], [Zip], [PhoneNumber], [Email], [VersionNumber], [Active]
+        FROM [Customer]
+        WHERE @CustomerID = [CustomerID]
+    END
+GO
 
+print '' print '*** creating sp_select_customer_by_city_state ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_customer_by_city_state]
+(
+    @City       [nvarchar](100),
+    @State      [nvarchar](2)
+)
+AS
+    BEGIN
+        SELECT [CustomerID], [GivenName], [FamilyName], [Address1], [Address2],
+            [City], [State], [Zip], [PhoneNumber], [Email], [VersionNumber], [Active]
+        FROM [Customer]
+        WHERE @City = [City]
+            AND @State = [State]
+    END
+GO
+
+print '' print '*** creating sp_select_customer_by_version_number ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_customer_by_version_number]
+(
+    @VersionNumber     [nvarchar](16)
+)
+AS
+    BEGIN
+        SELECT [CustomerID], [GivenName], [FamilyName], [Address1], [Address2],
+            [City], [State], [Zip], [PhoneNumber], [Email], [VersionNumber], [Active]
+        FROM [Customer]
+        WHERE @VersionNumber = [VersionNumber]
+    END
+GO
+
+print '' print '*** creating sp_select_active_customers ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_customers]
+
+AS
+    BEGIN
+        SELECT [CustomerID], [GivenName], [FamilyName], [Address1], [Address2],
+            [City], [State], [Zip], [PhoneNumber], [Email], [VersionNumber], [Active]
+        FROM [Customer]
+        WHERE [Active] = 1
     END
 GO
 
@@ -1221,335 +1246,738 @@ print '' print '*** creating sp_deactivate_customer ***'
 GO
 CREATE PROCEDURE [dbo].[sp_deactivate_customer]
 (
-
+    @CustomerID     [int]
 )
 AS
     BEGIN
-
+        UPDATE [Customer]
+        SET [Active] = 0
+        WHERE @CustomerID = [CustomerID]
+        RETURN @@ROWCOUNT
     END
 GO
 
 print '' print '*** creating sp_delete_customer ***'
 GO
 CREATE PROCEDURE [dbo].[sp_delete_customer]
-(
-
+(   
+    @CustomerID     [int],
+    @GivenName		[nvarchar](50),
+	@FamilyName     [nvarchar](100),
+    @Address1       [nvarchar](50),
+    @Address2       [nvarchar](50),
+    @City           [nvarchar](100),
+    @State          [nvarchar](2),
+    @Zip            [nvarchar](10),
+	@PhoneNumber	[nvarchar](11),
+	@Email			[nvarchar](150),
+    @VersionNumber  [nvarchar](16)
 )
 AS
     BEGIN
-
+        DELETE FROM [Customer]
+        WHERE @CustomerID = [CustomerID]
+            AND @GIvenName = [GivenName]
+            AND @FamilyName = [FamilyName]
+            AND @Address1 = [Address1]
+            AND @Address2 = [Address2]
+            AND @City = [City]
+            AND @State = [State]
+            AND @Zip = [Zip]
+            AND @PhoneNumber = [PhoneNumber]
+            AND @Email = [Email]
+            AND @VersionNumber = [VersionNumber]
+        RETURN @@ROWCOUNT
     END
 GO
 
 /* Computer Information CRUD */
 
-print '' print '*** creating sp_create_ ***'
+print '' print '*** creating sp_create_computer_information ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
-
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_update_ ***'
+CREATE PROCEDURE [dbo].[sp_create_computer_information]
+(
+    @CustomerID        [int],
+    @Manufacturer      [nvarchar](100),
+    @ModelNumber       [nvarchar](50),
+    @OperatingSystem   [nvarchar](50),
+    @CPU               [nvarchar](100),
+    @GraphicsCard      [nvarchar](100),
+    @RamType           [nvarchar](100),
+    @RamGB             [decimal],
+    @IPAddress         [nvarchar](16)
+)
+AS
+    BEGIN
+        INSERT INTO [ComputerInformation]
+                ([CustomerID], [Manufacturer], [ModelNumber], [OperatingSystem], [CPU], [GraphicsCard],
+                [RamType], [RamGB], [IPAddress])
+            VALUES
+                (@CustomerID, @Manufacturer, @ModelNumber, @OperatingSystem, @CPU, @GraphicsCard,
+                @RamType, @RamGB, @IPAddress)
+        RETURN @@ROWCOUNT
+    END
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_select_ ***'
+print '' print '*** creating sp_update_computer_information ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
+CREATE PROCEDURE [dbo].[sp_update_computer_information]
+(
+    @CustomerID        [int],
+    @OldManufacturer      [nvarchar](100),
+    @OldModelNumber       [nvarchar](50),
+    @OldOperatingSystem   [nvarchar](50),
+    @OldCPU               [nvarchar](100),
+    @OldGraphicsCard      [nvarchar](100),
+    @OldRamType           [nvarchar](100),
+    @OldRamGB             [decimal],
+    @OldIPAddress         [nvarchar](16),
+    @OldActive            [bit],
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_deactivate_ ***'
+    @NewManufacturer      [nvarchar](100),
+    @NewModelNumber       [nvarchar](50),
+    @NewOperatingSystem   [nvarchar](50),
+    @NewCPU               [nvarchar](100),
+    @NewGraphicsCard      [nvarchar](100),
+    @NewRamType           [nvarchar](100),
+    @NewRamGB             [decimal],
+    @NewIPAddress         [nvarchar](16),
+    @NewActive            [bit]  
+)
+AS
+    BEGIN
+        UPDATE [ComputerInformation]
+        SET [Manufacturer] = @NewManufacturer, 
+            [ModelNumber] = @NewModelNumber,
+            [OperatingSystem] = @NewOperatingSystem,
+            [CPU] = @NewCPU,
+            [GraphicsCard] = @NewGraphicsCard,
+            [RamType] = @NewRamType,
+            [RamGB] = @NewRamGB,
+            [IPAddress] = @NewIPAddress
+        WHERE @CustomerID = [CustomerID]
+            AND @OldManufacturer = [Manufacturer]
+            AND @OldModelNumber = [ModelNumber]
+            AND @OldOperatingSystem = [OperatingSystem]
+            AND @OldCPU = [CPU]
+            AND @OldGraphicsCard = [GraphicsCard]
+            AND @OldRamType = [RamType]
+            AND @OldRamGB = [RamGB]
+            AND @OldIPAddress = [IPAddress]
+    END
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_delete_ ***'
+print '' print '*** creating sp_select_computer_information_by_customerID ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
+CREATE PROCEDURE [dbo].[sp_sp_select_computer_information_by_customerID]
+(
+    @CustomerID     [int]
+)
+AS
+    BEGIN
+        SELECT [CustomerID], [Manufacturer], [ModelNumber], [OperatingSystem], [CPU],
+            [GraphicsCard], [RamType], [RamGB], [IPAddress], [Active]
+        FROM [ComputerInformation]
+        WHERE @CustomerID = [CustomerID]
+    END
+GO
 
--- )
--- AS
---     BEGIN
+print '' print '*** creating sp_select_computer_information_by_operating_system ***'
+GO
+CREATE PROCEDURE [dbo].[sp_sp_select_computer_information_by_operating_system]
+(
+    @OperatingSystem    [nvarchar](50)
+)
+AS
+    BEGIN
+        SELECT [CustomerID], [Manufacturer], [ModelNumber], [OperatingSystem], [CPU],
+            [GraphicsCard], [RamType], [RamGB], [IPAddress], [Active]
+        FROM [ComputerInformation]
+        WHERE @OperatingSystem = [OperatingSystem]
+    END
+GO
 
---     END
--- GO
+print '' print '*** creating sp_deactivate_computer_information ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_computer_information]
+(
+    @CustomerID     [int]
+)
+AS
+    BEGIN
+        UPDATE [ComputerInformation]
+        SET [Active] = 0
+        WHERE @CustomerID = [CustomerID]
+        RETURN @@ROWCOUNT
+    END
+GO
+
+print '' print '*** creating sp_delete_computer_information ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_computer_information]
+(
+    @CustomerID        [int],
+    @Manufacturer      [nvarchar](100),
+    @ModelNumber       [nvarchar](50),
+    @OperatingSystem   [nvarchar](50),
+    @CPU               [nvarchar](100),
+    @GraphicsCard      [nvarchar](100),
+    @RamType           [nvarchar](100),
+    @RamGB             [decimal],
+    @IPAddress         [nvarchar](16),
+    @Active            [bit]
+)
+AS
+    BEGIN
+        DELETE FROM [ComputerInformation]
+        WHERE @CustomerID = [CustomerID]
+            AND @Manufacturer = [Manufacturer]
+            AND @ModelNumber = [ModelNumber]
+            AND @OperatingSystem = [OperatingSystem]
+            AND @CPU = [CPU]
+            AND @GraphicsCard = [GraphicsCard]
+            AND @RamType = [RamType]
+            AND @RamGB = [RamGB]
+            AND @IPAddress = [IPAddress]
+            AND @Active = [Active]
+        RETURN @@ROWCOUNT
+    END
+GO
 
 /* Bug Status CRUD */
 
-print '' print '*** creating sp_create_ ***'
+print '' print '*** creating sp_create_bug_status ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
-
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_update_ ***'
+CREATE PROCEDURE [dbo].[sp_create_bug_status]
+(
+    @Status     [nvarchar](50)
+)
+AS
+    BEGIN
+        INSERT INTO [BugStatus]
+                ([Status])
+            VALUES
+                (@Status)
+        RETURN @@ROWCOUNT
+    END
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_select_ ***'
+print '' print '*** creating sp_update_bug_status ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
+CREATE PROCEDURE [dbo].[sp_update_bug_status]
+(
+    @OldStatus     [nvarchar](50),
+    @OldActive     [bit],
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_deactivate_ ***'
+    @NewStatus     [nvarchar](50),
+    @NewActive     [bit]
+)
+AS
+    BEGIN
+        UPDATE [BugStatus]
+            SET [Status] = @NewStatus,
+                [Active] = @NewActive
+            WHERE @OldStatus = [Status]
+                AND @OldActive = [Active]
+        RETURN @@ROWCOUNT
+    END
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_delete_ ***'
+print '' print '*** creating sp_select_bug_status ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
+CREATE PROCEDURE [dbo].[sp_select_bug_status]
+AS
+    BEGIN
+        SELECT [Status], [Active]
+        FROM [BugStatus]
+        WHERE [Active] = 1
+    END
+GO
 
--- )
--- AS
---     BEGIN
+print '' print '*** creating sp_deactivate_bug_status ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_bug_status]
+(
+    @Status     [nvarchar](50)
+)
+AS
+    BEGIN
+        UPDATE [BugStatus]
+        SET [Active] = 0
+        WHERE @Status = [Status]
+        RETURN @@ROWCOUNT
+    END
+GO
 
---     END
--- GO
+print '' print '*** creating sp_delete_bug_status ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_bug_status]
+(
+    @Status     [nvarchar](50),
+    @Active     [bit]
+)
+AS
+    BEGIN
+        DELETE FROM [BugStatus]
+        WHERE @Status = [Status]
+            AND @Active = [Active]
+        RETURN @@ROWCOUNT
+    END
+GO
+
 
 /* Product Version CRUD */
 
-print '' print '*** creating sp_create_ ***'
+
+print '' print '*** creating sp_create_product_varsion ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
-
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_update_ ***'
+CREATE PROCEDURE [dbo].[sp_create_product_varsion]
+(
+    @VersionNumber      [nvarchar](16),
+    @VersionStartDate   [date],
+    @VersionEndDate     [date]
+)
+AS
+    BEGIN
+        INSERT INTO [ProductVersion]
+                ([VersionNumber], [VersionStartDate], [VersionEndDate])
+            VALUES
+                (@VersionNumber, @VersionStartDate, @VersionEndDate)
+        RETURN @@ROWCOUNT
+    END
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_select_ ***'
+print '' print '*** creating sp_update_product_version ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
+CREATE PROCEDURE [dbo].[sp_update_product_version]
+(
+    @OldVersionNumber      [nvarchar](16),
+    @OldVersionStartDate   [date],
+    @OldVersionEndDate     [date],
+    @OldActive             [bit],
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_deactivate_ ***'
+    @NewVersionNumber      [nvarchar](16),
+    @NewVersionStartDate   [date],
+    @NewVersionEndDate     [date],
+    @NewActive             [bit]
+)
+AS
+    BEGIN
+        UPDATE [ProductVersion]
+        SET [VersionNumber] = @NewVersionNumber,
+            [VersionStartDate] = @NewVersionStartDate,
+            [VersionEndDate] = @NewVersionEndDate,
+            [Active] = @NewActive
+        WHERE @OldVersionNumber = [VersionNumber]
+            AND @OldVersionStartDate = [VersionStartDate]
+            AND @OldVersionEndDate = [VersionEndDate]
+            AND @OldActive = [Active]
+        RETURN @@ROWCOUNT
+    END
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_delete_ ***'
+print '' print '*** creating sp_select_product_version_by_version_number ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
+CREATE PROCEDURE [dbo].[sp_select_product_version_by_version_number]
+(
+    @VersionNumber      [nvarchar](16)
+)
+AS
+    BEGIN
+        SELECT [VersionNumber], [VersionStartDate], [VersionEndDate], [Active]
+        FROM [ProductVersion]
+        WHERE @VersionNumber = [VersionNumber]
+    END
+GO
 
--- )
--- AS
---     BEGIN
+print '' print '*** creating sp_select_active_product_versions ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_product_versions]
+AS
+    BEGIN
+        SELECT [VersionNumber], [VersionStartDate], [VersionEndDate], [Active]
+        FROM [ProductVersion]
+        WHERE [Active] = 1
+    END
+GO
 
---     END
--- GO
+print '' print '*** creating sp_select_all_product_versions ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_product_versions]
+AS
+    BEGIN
+        SELECT [VersionNumber], [VersionStartDate], [VersionEndDate], [Active]
+        FROM [ProductVersion]
+    END
+GO
+
+print '' print '*** creating sp_deactivate_product_version ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_product_version]
+(
+    @VersionNumber     [nvarchar](16)
+)
+AS
+    BEGIN
+        UPDATE [ProductVersion]
+        SET [Active] = 0
+        WHERE @VersionNumber = [VersionNumber]
+        RETURN @@ROWCOUNT
+    END
+GO
+
+print '' print '*** creating sp_delete_product_version ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_product_version]
+(
+    @VersionNumber      [nvarchar](16),
+    @VersionStartDate   [date],
+    @VersionEndDate     [date],
+    @Active             [bit]
+)
+AS
+    BEGIN
+        DELETE FROM [ProductVersion]
+        WHERE @VersionNumber = [VersionNumber]
+            AND @VersionStartDate = [VersionStartDate]
+            AND @VersionEndDate = [VersionEndDate]
+            AND @Active = [Active]
+        RETURN @@ROWCOUNT
+    END
+GO
 
 /* Product Area CRUD*/
 
-print '' print '*** creating sp_create_ ***'
+print '' print '*** creating sp_create_product_area ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
-
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_update_ ***'
+CREATE PROCEDURE [dbo].[sp_create_product_area]
+(
+    @AreaName               [nvarchar](50),
+    @FirstVersionNumber     [nvarchar](16)
+)
+AS
+    BEGIN
+        INSERT INTO [ProductArea]
+                ([AreaName], [FirstVersionNumber])
+            VALUES
+                (@AreaName, @FirstVersionNumber)
+        RETURN @@ROWCOUNT
+    END
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_select_ ***'
+print '' print '*** creating sp_update_product_area ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
+CREATE PROCEDURE [dbo].[sp_update_product_area]
+(
+    @OldAreaName               [nvarchar](50),
+    @OldFirstVersionNumber     [nvarchar](16),
+    @OldActive                 [bit],
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_deactivate_ ***'
+    @NewAreaName               [nvarchar](50),
+    @NewFirstVersionNumber     [nvarchar](16),
+    @NewActive                 [bit]
+)
+AS
+    BEGIN
+        UPDATE [ProductArea]
+        SET [AreaName] = @NewAreaName,
+            [FirstVersionNumber] = @NewFirstVersionNumber,
+            [Active] = @NewActive
+        WHERE @OldAreaName = [AreaName]
+            AND @OldFirstVersionNumber = [FirstVersionNumber]
+            AND @OldActive = [Active]
+        RETURN @@ROWCOUNT
+    END
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_delete_ ***'
+print '' print '*** creating sp_select_product_area_by_area_name ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
+CREATE PROCEDURE [dbo].[sp_select_product_area_by_area_name]
+(
+    @AreaName       [nvarchar](50)
+)
+AS
+    BEGIN
+        SELECT [AreaName], [FirstVersionNumber], [Active]
+        FROM [ProductArea]
+        WHERE @AreaName = [AreaName]
+    END
+GO
 
--- )
--- AS
---     BEGIN
+print '' print '*** creating sp_select_product_area_by_first_version ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_product_area_by_first_version]
+(
+    @FirstVersionNumber     [nvarchar](16)
+)
+AS
+    BEGIN
+        SELECT [AreaName], [FirstVersionNumber], [Active]
+        FROM [ProductArea]
+        WHERE @FirstVersionNumber = [FirstVersionNumber]
+    END
+GO
 
---     END
--- GO
+print '' print '*** creating sp_select_active_product_areas ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_product_areas]
+AS
+    BEGIN
+        SELECT [AreaName], [FirstVersionNumber], [Active]
+        FROM [ProductArea]
+        WHERE [Active] = 1
+    END
+GO
+
+print '' print '*** creating sp_select_product_areas ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_product_areas]
+AS
+    BEGIN
+        SELECT [AreaName], [FirstVersionNumber], [Active]
+        FROM [ProductArea]
+    END
+GO
+
+print '' print '*** creating sp_deactivate_product_area ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_product_area]
+(
+    @AreaName       [nvarchar](16)
+)
+AS
+    BEGIN
+        UPDATE [ProductArea]
+        SET [Active] = 0
+        WHERE @AreaName = [AreaName]
+        RETURN @@ROWCOUNT
+    END
+GO
+
+print '' print '*** creating sp_delete_product_area ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_product_area]
+(
+    @AreaName               [nvarchar](50),
+    @FirstVersionNumber     [nvarchar](16),
+    @Active                 [bit]
+)
+AS
+    BEGIN
+        DELETE FROM [ProductArea]
+        WHERE @AreaName = [AreaName]
+            AND @FirstVersionNumber = [FirstVersionNumber]
+            AND @Active = [Active]
+        RETURN @@ROWCOUNT
+    END
+GO
 
 /* Feature CRUD */
 
-print '' print '*** creating sp_create_ ***'
+print '' print '*** creating sp_create_feature ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
-
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_update_ ***'
+CREATE PROCEDURE [dbo].[sp_create_feature]
+(
+    @FeatureName        [nvarchar](100),
+    @FirstVersionNumber [nvarchar](16),
+    @FeatureArea        [nvarchar](50),
+    @FeatureDescription [nvarchar](max),
+    @LastVersionNumber  [nvarchar](50)
+)
+AS
+    BEGIN
+        INSERT INTO [Feature]
+                ([FeatureName], [FirstVersionNumber], [FeatureArea], 
+                    [FeatureDescription], [LastVersionNumber])
+            VALUES
+                (@FeatureName, @FirstVersionNumber, @FeatureArea, 
+                    @FeatureDescription, @LastVersionNumber)
+        RETURN @@ROWCOUNT
+    END
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_select_ ***'
+print '' print '*** creating sp_update_feature ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
+CREATE PROCEDURE [dbo].[sp_update_feature]
+(
+    @OldFeatureName        [nvarchar](100),
+    @OldFirstVersionNumber [nvarchar](16),
+    @OldFeatureArea        [nvarchar](50),
+    @OldFeatureDescription [nvarchar](max),
+    @OldLastVersionNumber  [nvarchar](50),
+    @OldActive             [bit],
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_deactivate_ ***'
+    @NewFeatureName        [nvarchar](100),
+    @NewFirstVersionNumber [nvarchar](16),
+    @NewFeatureArea        [nvarchar](50),
+    @NewFeatureDescription [nvarchar](max),
+    @NewLastVersionNumber  [nvarchar](50),
+    @NewActive             [bit]
+)
+AS
+    BEGIN
+        UPDATE [Feature]
+        SET [FeatureName] = @NewFeatureName,
+            [FirstVersionNumber] = @NewFirstVersionNumber,
+            [FeatureArea] = @NewFeatureArea,
+            [FeatureDescription] = @NewFeatureDescription,
+            [LastVersionNumber] = @NewLastVersionNumber,
+            [Active] = @NewActive
+        WHERE @OldFeatureName = [FeatureName]
+            AND @OldFirstVersionNumber = [FirstVersionNumber]
+            AND @OldFeatureArea = [FeatureArea]
+            AND @OldFeatureDescription = [FeatureDescription]
+            AND @OldLastVersionNumber = [LastVersionNumber]
+            AND @OldActive = [Active]
+        RETURN @@ROWCOUNT
+    END
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
 
--- )
--- AS
---     BEGIN
-
---     END
--- GO
-
-print '' print '*** creating sp_delete_ ***'
+print '' print '*** creating sp_select_feature_by_feature_name ***'
 GO
--- CREATE PROCEDURE [dbo].[sp_]
--- (
+CREATE PROCEDURE [dbo].[sp_select_feature_by_feature_name]
+(
+    @FeatureName        [nvarchar](100)
+)
+AS
+    BEGIN
+        SELECT [FeatureName], [FirstVersionNumber], [FeatureArea],
+            [FeatureDescription], [LastVersionNumber], [Active]
+        FROM [Feature]
+        WHERE @FeatureName = [FeatureName]
+    END
+GO
 
--- )
--- AS
---     BEGIN
+print '' print '*** creating sp_select_feature_by_first_version ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_feature_by_first_version]
+(
+    @FirstVersionNumber [nvarchar](16)
+)
+AS
+    BEGIN
+        SELECT [FeatureName], [FirstVersionNumber], [FeatureArea],
+            [FeatureDescription], [LastVersionNumber], [Active]
+        FROM [Feature]
+        WHERE @FirstVersionNumber = [FirstVersionNumber]
+    END
+GO
 
---     END
--- GO
+print '' print '*** creating sp_select_feature_by_feature_area ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_feature_by_feature_area]
+(
+    @FeatureArea        [nvarchar](50)
+)
+AS
+    BEGIN
+        SELECT [FeatureName], [FirstVersionNumber], [FeatureArea],
+            [FeatureDescription], [LastVersionNumber], [Active]
+        FROM [Feature]
+        WHERE @FeatureArea = [FeatureArea]
+    END
+GO
+
+print '' print '*** creating sp_select_feature_by_last_version ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_feature_by_last_version]
+(
+    @LastVersionNumber  [nvarchar](16)
+)
+AS
+    BEGIN
+        SELECT [FeatureName], [FirstVersionNumber], [FeatureArea],
+            [FeatureDescription], [LastVersionNumber], [Active]
+        FROM [Feature]
+        WHERE @LastVersionNumber = [LastVersionNumber]
+    END
+GO
+
+print '' print '*** creating sp_select_feature_by_last_version_notnull ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_feature_by_last_version_notnull]
+AS
+    BEGIN
+        SELECT [FeatureName], [FirstVersionNumber], [FeatureArea],
+            [FeatureDescription], [LastVersionNumber], [Active]
+        FROM [Feature]
+        WHERE [LastVersionNumber] IS NOT NULL
+    END
+GO
+
+print '' print '*** creating sp_select_feature_by_last_version_null ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_feature_by_last_version_null]
+AS
+    BEGIN
+        SELECT [FeatureName], [FirstVersionNumber], [FeatureArea],
+            [FeatureDescription], [LastVersionNumber], [Active]
+        FROM [Feature]
+        WHERE [LastVersionNumber] IS NULL
+    END
+GO
+
+print '' print '*** creating sp_select_active_features ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_features]
+AS
+    BEGIN
+        SELECT [FeatureName], [FirstVersionNumber], [FeatureArea],
+            [FeatureDescription], [LastVersionNumber], [Active]
+        FROM [Feature]
+        WHERE [Active] = 1
+    END
+GO
+
+print '' print '*** creating sp_select_all_features ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_feature]
+AS
+    BEGIN
+        SELECT [FeatureName], [FirstVersionNumber], [FeatureArea],
+            [FeatureDescription], [LastVersionNumber], [Active]
+        FROM [Feature]
+    END
+GO
+
+print '' print '*** creating sp_deactivate_feature ***'
+GO
+CREATE PROCEDURE [dbo].[sp_deactivate_feature]
+(
+    @FeatureName        [nvarchar](100)
+)
+AS
+    BEGIN
+        UPDATE [Feature]
+        SET [Active] = 0
+        WHERE @FeatureName = [FeatureName]
+        RETURN @@ROWCOUNT
+    END
+GO
+
+print '' print '*** creating sp_delete_feature ***'
+GO
+CREATE PROCEDURE [dbo].[sp_delete_feature]
+(
+    @FeatureName        [nvarchar](100),
+    @FirstVersionNumber [nvarchar](16),
+    @FeatureArea        [nvarchar](50),
+    @FeatureDescription [nvarchar](max),
+    @LastVersionNumber  [nvarchar](50),
+    @Active             [bit]
+)
+AS
+    BEGIN
+        DELETE FROM [Feature]
+        WHERE @FeatureName = [FeatureName]
+            AND @FirstVersionNumber = [FirstVersionNumber]
+            AND @FeatureArea = [FeatureArea]
+            AND @FeatureDescription = [FeatureDescription]
+            AND @LastVersionNumber = [LastVersionNumber]
+            AND @Active = [Active]
+        RETURN @@ROWCOUNT
+    END
+GO
 
 /* Bug Ticket Archive CRUD */
 
