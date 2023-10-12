@@ -232,7 +232,11 @@ INSERT INTO [dbo].[EmployeeRole]
         ([EmployeeID], [RoleID])
     VALUES
         (100000, 'Programmer'),
-        (100001, 'ProjectLead');
+		(100000, 'Manager'),
+		(100000, 'Admin'),
+        (100001, 'ProjectLead'),
+		(100001, 'Manager'),
+		(100001, 'Admin')
 GO
 
 
