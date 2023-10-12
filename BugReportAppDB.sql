@@ -94,8 +94,7 @@ GO
 INSERT INTO [dbo].[ProductVersion]
         ([VersionNumber], [VersionStartDate], [VersionEndDate])
     VALUES
-        ('1.02.001', '2023-10-01', null),
-        ('1.01.001', '2023-08-21', '2023-10-01');
+        ('0.01.001', '2023-10-01', null);
 GO
 
 print '' print '*** creating product area table ***'
@@ -118,14 +117,14 @@ GO
 INSERT INTO [dbo].[ProductArea]
         ([AreaName], [FirstVersionNumber])
     VALUES
-        ('Core', '1.01.001'),
-        ('Save', '1.01.001'),
-        ('Load', '1.01.001'),
-        ('Network', '1.01.001'),
-        ('Downloading', '1.01.001'),
-        ('Installation', '1.01.001'),
-        ('Uninstall', '1.01.001'),
-        ('Other', '1.01.001');
+        ('Core', '0.01.001'),
+        ('Save', '0.01.001'),
+        ('Load', '0.01.001'),
+        ('Network', '0.01.001'),
+        ('Downloading', '0.01.001'),
+        ('Installation', '0.01.001'),
+        ('Uninstall', '0.01.001'),
+        ('Other', '0.01.001');
 GO
 
 print '' print '*** creating feature list table ***'
@@ -142,7 +141,8 @@ CREATE TABLE [dbo].[Feature] (
     CONSTRAINT [fk_FeatureList_FirstVersionNumber] FOREIGN KEY ([FirstVersionNumber])
         REFERENCES [dbo].[ProductVersion] ([VersionNumber]),
     CONSTRAINT [fk_FeatureArea] FOREIGN KEY ([FeatureArea])
-        REFERENCES [dbo].[ProductArea] ([AreaName])
+        REFERENCES [dbo].[ProductArea] ([AreaName]),
+    CONSTRAINT [ak_FeatureName] UNIQUE ([FeatureName])
 );
 GO
 
@@ -174,7 +174,7 @@ CREATE TABLE [dbo].[Employee] (
 	[Active]		[bit]						NOT NULL DEFAULT 1,
 	CONSTRAINT [pk_EmployeeID] PRIMARY KEY([EmployeeID]),
 	CONSTRAINT [ak_Employee_Email] UNIQUE([Email])
-)
+);
 GO
 
 print '' print '*** instert into employee table ***'
@@ -193,7 +193,7 @@ CREATE TABLE [dbo].[Role] (
     [Active]    [bit]                       NOT NULL DEFAULT 1
 
 	CONSTRAINT [pk_RoleID] PRIMARY KEY([RoleID])
-)
+);
 GO
 
 print '' print '*** inserting role test records ***'
@@ -206,7 +206,7 @@ INSERT INTO [dbo].[Role]
 		('Programmer'),
 		('SeniorProgrammer'),
 		('ProjectLead'),
-		('Admin')
+		('Admin');
 GO
 
 print '' print '*** creating employee role table ***'
@@ -223,7 +223,7 @@ CREATE TABLE [dbo].[EmployeeRole] (
 		REFERENCES [dbo].[Role]([RoleID]),
 		
 	CONSTRAINT [pk_EmployeeRole] PRIMARY KEY([EmployeeID], [RoleID])
-)
+);
 GO
 
 print '' print '*** instert into employee role table ***'
@@ -236,7 +236,7 @@ INSERT INTO [dbo].[EmployeeRole]
 		(100000, 'Admin'),
         (100001, 'ProjectLead'),
 		(100001, 'Manager'),
-		(100001, 'Admin')
+		(100001, 'Admin');
 GO
 
 
@@ -260,19 +260,22 @@ CREATE TABLE [dbo].[Customer] (
     [Active]		[bit]						NOT NULL DEFAULT 1
     
 	CONSTRAINT [pk_CustomerID] PRIMARY KEY([CustomerID]),
+    CONSTRAINT [fk_Customer_VersionNumber] FOREIGN KEY ([VersionNumber])
+        REFERENCES [dbo].[ProductVersion] ([VersionNumber]),
 	CONSTRAINT [ak_Customer_Email] UNIQUE([Email])
-)
+);
 GO
 
+/* Test insert code worked 2023-10-05 
 print '' print '*** instert customer into ***'
 GO
 INSERT INTO [dbo].[Customer]
         ([GivenName], [FamilyName], [Email], [VersionNumber])
     VALUES
         ('James', 'Williams', 'jwiliams@test.com', '1.01.001'),
-        ('Jacob', 'Wendt', 'jwendt@test.com', null)
-        ;
+        ('Jacob', 'Wendt', 'jwendt@test.com', null);
 GO
+*/
 
 print '' print '*** creating computer information table ***'
 GO
@@ -292,6 +295,7 @@ CREATE TABLE [dbo].[ComputerInformation] (
 );
 GO
 
+/* Test insert code worked 2023-10-05 
 print '' print '*** instert into computer information table ***'
 GO
 INSERT INTO [dbo].[ComputerInformation]
@@ -300,6 +304,7 @@ INSERT INTO [dbo].[ComputerInformation]
         (100001, null, null, 'Windows', null, 'Nvidia 3080', 'DDR5', 32, '127.0.0.1'),
         (100002, null, null, 'Windows', null, 'Nvidia 3070', 'DDR5', 16, '127.0.0.2');
 GO
+*/
 
 print '' print '*** creating bug ticket table ***'
 GO
@@ -333,6 +338,7 @@ CREATE TABLE [dbo].[BugTicket] (
 );
 GO
 
+/* Test insert code worked 2023-10-05 
 print '' print '*** instert into bug ticket table ***'
 GO
 INSERT INTO [dbo].[BugTicket]
@@ -341,35 +347,24 @@ INSERT INTO [dbo].[BugTicket]
         (100000, '1.01.001', 'Core', 'Test description'),
         (100001, '1.02.001', 'Other', 'Test two descriptoin');
 GO
+*/
 
 print '' print '*** creating bug ticket archive table ***'
 GO
 CREATE TABLE [dbo].[BugTicketArchive] (
     [BugTicketID]       [int]                       NOT NULL,
-    [BugDate]           [date]                      NOT NULL DEFAULT GETDATE(),
+    [BugDate]           [date]                      NOT NULL,
     [SubmitID]          [int]                       NOT NULL,
     [VersionNumber]     [nvarchar](16)              NOT NULL,
     [AreaName]          [nvarchar](50)              NOT NULL,
     [Description]       [nvarchar](max)             NOT NULL,
-    [Status]            [nvarchar](50)              NOT NULL DEFAULT 'New',
+    [Status]            [nvarchar](50)              NOT NULL,
     [Feature]           [nvarchar](100)             NULL,
     [AssignedTo]        [int]                       NULL,
     [LastWorkedDate]    [date]                      NULL,
     [LastWorkedEmployee][int]                       NULL
 
     CONSTRAINT [pk_BugTicketArchive] PRIMARY KEY ([BugTicketID]),
-    CONSTRAINT [fk_ArchiveTicketCustomerID] FOREIGN KEY ([SubmitID])
-        REFERENCES [dbo].[Customer] ([CustomerID]),
-    CONSTRAINT [fk_ArchiveTicketEmployeeID] FOREIGN KEY ([SubmitID])
-        REFERENCES [dbo].[Employee] ([EmployeeID]),
-    CONSTRAINT [fk_ArchiveTicketVersion] FOREIGN KEY ([VersionNumber])
-        REFERENCES [dbo].[ProductVersion] ([VersionNumber]),
-    CONSTRAINT [fk_ArchiveTicketArea] FOREIGN KEY ([AreaName])
-        REFERENCES [dbo].[ProductArea] ([AreaName]),
-    CONSTRAINT [fk_ArchiveTicketStatus] FOREIGN KEY ([Status])
-        REFERENCES [dbo].[BugStatus] ([Status]),
-    CONSTRAINT [fk_ArchiveTicketFeature] FOREIGN KEY ([Feature])
-        REFERENCES [dbo].[Feature] ([FeatureName])
 );
 GO
 
