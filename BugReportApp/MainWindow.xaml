@@ -79,22 +79,16 @@
 
         <!-- Main Tabs -->
         <TabControl x:Name="tabsetMain" Grid.Row="3">
-            <TabItem x:Name="tabRental" Header="Segways for Rent">
+            <TabItem x:Name="tabProgrammer" Header="Programmer">
                 <Label Content="Rental Tab" />
             </TabItem>
-            <TabItem x:Name="tabTour" Header="Upcoming Tours">
-                <Label Content="Tour Tab" />
-            </TabItem>
-            <TabItem x:Name="tabCheckIn" Header="Segways to Return">
+            <TabItem x:Name="tabSrProgrammer" Header="Senior Programmer">
                 <Label Content="Check In Tab" />
             </TabItem>
-            <TabItem x:Name="tabPrep" Header="Segways to be Prepped">
+            <TabItem x:Name="tabProjectLead" Header="Project Lead">
                 <Label Content="Prep Tab" />
             </TabItem>
-            <TabItem x:Name="tabMaintenance" Header="Maintenance List">
-                <Label Content="Maintenance Tab" />
-            </TabItem>
-            <TabItem x:Name="tabManager" Header="Inventory Management">
+            <TabItem x:Name="tabManager" Header="Manager">
                 <Label Content="Manager Tab" />
             </TabItem>
             <TabItem x:Name="tabAdmin" Header="Administration">

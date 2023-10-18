@@ -234,6 +234,7 @@ INSERT INTO [dbo].[EmployeeRole]
         (100000, 'Programmer'),
 		(100000, 'Manager'),
 		(100000, 'Admin'),
+        (100001, 'SeniorProgrammer',)
         (100001, 'ProjectLead'),
 		(100001, 'Manager'),
 		(100001, 'Admin');
