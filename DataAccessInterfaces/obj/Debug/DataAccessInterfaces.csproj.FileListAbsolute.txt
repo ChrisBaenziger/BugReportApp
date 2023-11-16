@@ -1,0 +1,9 @@
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessInterfaces\bin\Debug\DataAccessInterfaces.dll
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessInterfaces\bin\Debug\DataAccessInterfaces.pdb
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessInterfaces\bin\Debug\DataObjects.dll
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessInterfaces\bin\Debug\DataObjects.pdb
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessInterfaces\obj\Debug\DataAccessInterfaces.csproj.AssemblyReference.cache
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessInterfaces\obj\Debug\DataAccessInterfaces.csproj.CoreCompileInputs.cache
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessInterfaces\obj\Debug\DataAccessInterfaces.csproj.CopyComplete
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessInterfaces\obj\Debug\DataAccessInterfaces.dll
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessInterfaces\obj\Debug\DataAccessInterfaces.pdb

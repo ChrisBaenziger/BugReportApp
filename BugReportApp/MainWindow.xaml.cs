@@ -20,6 +20,10 @@ namespace BugReportApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        // !!! after returning from another window refresh the item source !!!
+
+        //EmployeeManager _employeeManager = null;
+        //EmployeeVM _loggedInEmployee = null;
         public MainWindow()
         {
             InitializeComponent();

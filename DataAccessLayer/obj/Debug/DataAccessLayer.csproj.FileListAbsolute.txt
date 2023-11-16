@@ -1,0 +1,11 @@
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessLayer\bin\Debug\DataAccessLayer.dll
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessLayer\bin\Debug\DataAccessLayer.pdb
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessLayer\bin\Debug\DataAccessInterfaces.dll
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessLayer\bin\Debug\DataObjects.dll
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessLayer\bin\Debug\DataAccessInterfaces.pdb
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessLayer\bin\Debug\DataObjects.pdb
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessLayer\obj\Debug\DataAccessLayer.csproj.AssemblyReference.cache
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessLayer\obj\Debug\DataAccessLayer.csproj.CoreCompileInputs.cache
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessLayer\obj\Debug\DataAccessLayer.csproj.CopyComplete
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessLayer\obj\Debug\DataAccessLayer.dll
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataAccessLayer\obj\Debug\DataAccessLayer.pdb

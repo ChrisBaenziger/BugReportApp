@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:BugReportApp"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Bug report Manager" Height="700" Width="1200">
+        Title="Bug report Manager" Height="700" Width="1200"
+        BorderBrush="DarkSlateGray" BorderThickness="1,1,1,1" Background="LightGray">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
@@ -78,26 +79,77 @@
         </Grid> <!-- End Login Section -->
 
         <!-- Main Tabs -->
-        <TabControl x:Name="tabsetMain" Grid.Row="3">
-            <TabItem x:Name="tabProgrammer" Header="Programmer">
-                <Label Content="Rental Tab" />
-            </TabItem>
-            <TabItem x:Name="tabSrProgrammer" Header="Senior Programmer">
-                <Label Content="Check In Tab" />
-            </TabItem>
-            <TabItem x:Name="tabProjectLead" Header="Project Lead">
-                <Label Content="Prep Tab" />
-            </TabItem>
-            <TabItem x:Name="tabManager" Header="Manager">
-                <Label Content="Manager Tab" />
-            </TabItem>
-            <TabItem x:Name="tabAdmin" Header="Administration">
-                <Label Content="Admin Tab" />
-            </TabItem>
-            <TabItem x:Name="tabSettings" Header="Settings">
-                <Label Content="Settings" />
-            </TabItem>
-        </TabControl> <!-- End Main Tabs Section -->
+        <StackPanel x:Name="tabContainer" Grid.Row="3">
+            <TabControl x:Name="tabsetMain" Height="1000">
+                <TabItem x:Name="tabProgrammer" Header="Programmer">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition />
+                            <RowDefinition Height="10"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="1" Content="Bug Report List" />
+                        <DataGrid x:Name="datProgrammerBugList" Grid.Row="3" SelectionMode="Single" 
+                              IsReadOnly="True" />
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tabSrProgrammer" Header="Senior Programmer">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition />
+                            <RowDefinition Height="10"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="1" Content="Project Lead Tab" />
+                        <DataGrid x:Name="datSrProgrammerBugList" Grid.Row="3" SelectionMode="Single" 
+                              IsReadOnly="True" />
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tabProjectLead" Header="Project Lead">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <!-- Review info about the status of bug reports -->
+                        <Label Content="Project Lead Tab" />
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tabManager" Header="Manager">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <!-- Review info about the status of bug reports -->
+                        <Label Content="Manager Tab" />
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tabAdmin" Header="Administration">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <!-- User and password management -->
+                        <Label Content="Admin Tab" />
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="tabSettings" Header="Settings">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <!-- Settings for the program -->
+                        <Label Content="Settings" />
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </StackPanel> 
+        <!-- End Main Tabs Section -->
 
         <!-- Status Bar Section -->
         <StatusBar Grid.Row="6">
@@ -105,5 +157,6 @@
                            Content="Welcome. Please log in to continue."
                            Padding="20px, 0px" />
         </StatusBar> <!-- End Status Bar Section -->
+        
     </Grid>
 </Window>

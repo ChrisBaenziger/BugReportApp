@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\BugReportApp\App.xaml
-1219584333
+31949295450
 
-6-502434485
+8-940673018
 15736606847
-MainWindow.xaml;
+AddEditWindow.xaml;MainWindow.xaml;PasswordUpdateWindow.xaml;
 
 True
 
