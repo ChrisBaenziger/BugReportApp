@@ -23,3 +23,32 @@ C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\BugReportApp\obj
 C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\BugReportApp\obj\Debug\PasswordUpdateWindow.baml
 C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\BugReportApp\obj\Debug\AddEditWindow.g.cs
 C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\BugReportApp\obj\Debug\AddEditWindow.baml
+C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\BugReportApp.exe.config
+C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\BugReportApp.exe
+C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\BugReportApp.pdb
+C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\DataObjects.dll
+C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\LogicLayer.dll
+C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\DataObjects.pdb
+C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\LogicLayer.pdb
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\BugReportApp.csproj.AssemblyReference.cache
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\BugReportApp.csproj.SuggestedBindingRedirects.cache
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\AddEditWindow.g.cs
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\MainWindow.g.cs
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\PasswordUpdateWindow.g.cs
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\App.g.cs
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\BugReportApp_MarkupCompile.cache
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\BugReportApp_MarkupCompile.lref
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\AddEditWindow.baml
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\MainWindow.baml
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\PasswordUpdateWindow.baml
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\BugReportApp.g.resources
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\BugReportApp.Properties.Resources.resources
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\BugReportApp.csproj.GenerateResource.cache
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\BugReportApp.csproj.CoreCompileInputs.cache
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\BugReportApp.csproj.CopyComplete
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\BugReportApp.exe
+C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\BugReportApp.pdb
+C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\DataAccessInterfaces.dll
+C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\DataAccessLayer.dll
+C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\DataAccessInterfaces.pdb
+C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\DataAccessLayer.pdb

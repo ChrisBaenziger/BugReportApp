@@ -4,3 +4,9 @@ C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataObjects\obj\
 C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataObjects\obj\Debug\DataObjects.csproj.CoreCompileInputs.cache
 C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataObjects\obj\Debug\DataObjects.dll
 C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\DataObjects\obj\Debug\DataObjects.pdb
+C:\CustomProjects\BugReportApp\DataObjects\bin\Debug\DataObjects.dll
+C:\CustomProjects\BugReportApp\DataObjects\bin\Debug\DataObjects.pdb
+C:\CustomProjects\BugReportApp\DataObjects\obj\Debug\DataObjects.csproj.AssemblyReference.cache
+C:\CustomProjects\BugReportApp\DataObjects\obj\Debug\DataObjects.csproj.CoreCompileInputs.cache
+C:\CustomProjects\BugReportApp\DataObjects\obj\Debug\DataObjects.dll
+C:\CustomProjects\BugReportApp\DataObjects\obj\Debug\DataObjects.pdb

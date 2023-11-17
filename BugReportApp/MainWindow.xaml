@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Bug report Manager" Height="700" Width="1200"
-        BorderBrush="DarkSlateGray" BorderThickness="1,1,1,1" Background="LightGray">
+        BorderBrush="DarkSlateGray" BorderThickness="1,1,1,1" Background="LightGray" Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
@@ -22,13 +22,13 @@
         <!-- Main Menu -->
         <Menu Grid.Row="0" Padding="20px 0px">
             <MenuItem x:Name="mnuFile" Header="File">
-                <MenuItem x:Name="mnuExit" Header="Exit"></MenuItem>
+                <MenuItem x:Name="mnuExit" Header="Exit" Click="mnuExit_Click"></MenuItem>
             </MenuItem>
             <MenuItem x:Name="mnuEdit" Header="Edt">
-                <MenuItem x:Name="mnuPreferences" Header="Preferences"></MenuItem>
+                <MenuItem x:Name="mnuChangePassword" Header="Change Password" Click="mnuChangePassword_Click"></MenuItem>
             </MenuItem>
             <MenuItem x:Name="mnuHelp" Header="Help">
-                <MenuItem x:Name="mnuAbout" Header="About"></MenuItem>
+                <MenuItem x:Name="mnuAbout" Header="About" Click="mnuAbout_Click"></MenuItem>
             </MenuItem>
         </Menu> <!-- End Main Menu Section -->
 
@@ -39,9 +39,9 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="100" />
                 <ColumnDefinition />
-                <ColumnDefinition Width="250px"/>
+                <ColumnDefinition Width="200px"/>
                 <ColumnDefinition Width="250px"/>
                 <ColumnDefinition Width="125px"/>
             </Grid.ColumnDefinitions>
@@ -75,7 +75,7 @@
             <!-- Login Button -->
             <Button Grid.Column="4" Grid.Row="0" 
                     x:Name="btnLogin" Content="Log In"
-                    Margin="5px" FontWeight="Bold" Background="Blue" Foreground="AliceBlue" />
+                    Margin="5px" FontWeight="Bold" Background="Blue" Foreground="AliceBlue" Click="btnLogin_Click" />
         </Grid> <!-- End Login Section -->
 
         <!-- Main Tabs -->
@@ -85,7 +85,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="10"/>
-                            <RowDefinition />
+                            <RowDefinition Height="35"/>
                             <RowDefinition Height="10"/>
                             <RowDefinition />
                         </Grid.RowDefinitions>

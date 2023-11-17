@@ -49,7 +49,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="EmployeeManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +59,10 @@
     <ProjectReference Include="..\DataAccessFakes\DataAccessFakes.csproj">
       <Project>{52342ef6-c2a2-417a-8b41-6dcc993fafe3}</Project>
       <Name>DataAccessFakes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessInterfaces\DataAccessInterfaces.csproj">
+      <Project>{39db4f76-49bc-4842-b8d5-8b22332a9ec7}</Project>
+      <Name>DataAccessInterfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataObjects\DataObjects.csproj">
       <Project>{7ce65746-52a0-4ff9-b857-4f2c190383df}</Project>

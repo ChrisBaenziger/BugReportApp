@@ -19,3 +19,28 @@ C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\UnitTestProject\
 C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\UnitTestProject\obj\Debug\UnitTestProject.csproj.CopyComplete
 C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\UnitTestProject\obj\Debug\UnitTestProject.dll
 C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\UnitTestProject\obj\Debug\UnitTestProject.pdb
+C:\CustomProjects\BugReportApp\UnitTestProject\obj\Debug\UnitTestProject.csproj.AssemblyReference.cache
+C:\CustomProjects\BugReportApp\UnitTestProject\obj\Debug\UnitTestProject.csproj.CoreCompileInputs.cache
+C:\CustomProjects\BugReportApp\UnitTestProject\obj\Debug\UnitTestProject.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\obj\Debug\UnitTestProject.pdb
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\Microsoft.TestPlatform.AdapterUtilities.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\UnitTestProject.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\UnitTestProject.pdb
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\DataAccessFakes.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\DataAccessInterfaces.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\DataObjects.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\LogicLayer.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\DataAccessLayer.dll
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\DataAccessFakes.pdb
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\DataAccessInterfaces.pdb
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\DataObjects.pdb
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\LogicLayer.pdb
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\DataAccessLayer.pdb
+C:\CustomProjects\BugReportApp\UnitTestProject\obj\Debug\UnitTestProject.csproj.CopyComplete

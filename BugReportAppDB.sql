@@ -234,7 +234,7 @@ INSERT INTO [dbo].[EmployeeRole]
         (100000, 'Programmer'),
 		(100000, 'Manager'),
 		(100000, 'Admin'),
-        (100001, 'SeniorProgrammer',)
+        (100001, 'SeniorProgrammer'),
         (100001, 'ProjectLead'),
 		(100001, 'Manager'),
 		(100001, 'Admin');
@@ -866,7 +866,7 @@ GO
 
 print '' print '*** creating sp_select_employee_by_employeeID ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_employee-by_employeeID]
+CREATE PROCEDURE [dbo].[sp_select_employee_by_employeeID]
 (
     @EmployeeID     [int]
 )
