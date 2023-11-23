@@ -21,5 +21,12 @@ namespace DataObjects
         public int LastWorkedEmployee { get; set; }
         public bool Active { get; set; }
     }
+
+    public class BugTicketVM
+    {
+        public string AssignedToName { get; set; }
+
+        public string LastWorkedName { get; set; }
+    }
         
 }

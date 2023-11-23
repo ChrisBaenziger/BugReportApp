@@ -165,5 +165,51 @@ namespace DataAccessLayer
 
             return rows;
         }
+
+        public List<Employee> SelectAllEmployees()
+        {
+            List<Employee> employees = new List<Employee>(); ;
+
+            var conn = DBConnectionProvider.GetConnection();
+            var cmdText = "sp_select_all_employees";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Employee employee = new EmployeeVM()
+                        {
+                            EmployeeID = reader.GetInt32(0),
+                            GivenName = reader.GetString(1),
+                            FamilyName = reader.GetString(2),
+                            PhoneNumber = reader.GetString(8),
+                            Email = reader.GetString(9)
+                        };
+                        employees.Add(employee);
+                    }
+                }
+                else
+                {
+                    throw new ApplicationException("No employees found.")
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return employees;
+        }
     }
 }

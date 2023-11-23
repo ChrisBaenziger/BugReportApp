@@ -77,7 +77,7 @@ namespace LogicLayer
 
             byte[] data;
 
-            using (SHA256 sha256hasher =  SHA256.Create())
+            using (SHA256 sha256hasher = SHA256.Create())
             {
                 data = sha256hasher.ComputeHash(Encoding.UTF8.GetBytes(source));
             }
@@ -100,7 +100,7 @@ namespace LogicLayer
             try
             {
                 string passwordHash = HashSha256(password);
-                if(AuthenticateEmployee(email, passwordHash))
+                if (AuthenticateEmployee(email, passwordHash))
                 {
                     employeeVM = _employeeAccessor.SelectEmployeeByEmail(email);
                     employeeVM.Roles = _employeeAccessor.SelectRolesByEmployeeID(employeeVM.EmployeeID);
@@ -133,6 +133,22 @@ namespace LogicLayer
                 throw new ApplicationException("Update failed.", ex);
             }
             return result;
+        }
+
+        public List<Employee> GetAllEmployees()
+        {
+            List<Employee> employees = null;
+
+            try
+            {
+                employees = _employeeAccessor.SelectAllEmployees();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Employees not found.", ex);
+            }
+
+            return employees;
         }
     }
 }

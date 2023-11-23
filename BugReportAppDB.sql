@@ -497,6 +497,43 @@ AS
 	END
 GO
 
+/* Employee Stored Procedures*/
+
+print '' print '*** creating sp_select_all_employees ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_employees]
+AS
+    BEGIN
+        SELECT [EmployeeID], [GivenName], [FamilyName], [Address1], [Address2], [City], [State], [Zip],
+            [PhoneNumber], [Email]
+        FROM [Employee]
+        WHERE [Active] = 1
+    END
+GO
+
+print '' print '*** creating sp_select_all_employees_with_roles ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_employees_with_roles]
+AS
+    BEGIN
+        SELECT [Employee].[EmployeeID], [GivenName], [FamilyName], [Address1], [Address2], [City], [State], [Zip],
+             [PhoneNumber], [Email], [RoleID]
+        FROM [Employee]
+        JOIN [EmployeeRole] ON [Employee].[EmployeeID] = [EmployeeRole].[EmployeeID]
+        WHERE [Employee].[Active] = 1
+    END
+GO
+
+print '' print '*** creating sp_select_employees_roles ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_employees_roles]
+AS
+    BEGIN
+        SELECT [EmployeeID], [RoleID]
+        FROM [EmployeeRole]
+        WHERE [Active] = 1
+    END
+GO
 
 /* Bug Ticket Stored Procedures */
 

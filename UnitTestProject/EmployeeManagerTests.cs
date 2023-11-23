@@ -125,5 +125,23 @@ namespace UnitTestProject
             actualResult = _employeeManager.ResetPassword(email, password, newPassword);
         }
 
+        [TestMethod]
+        public void TestGetAllEmployeesReturnsCorrectList()
+        {
+            int expectedCount = 3;
+            int actualCount = 0;
+
+            actualCount = _employeeManager.GetAllEmployees().Count;
+
+            Assert.AreEqual(expectedCount, actualCount);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestGetAllEmployeesFailsWithNoList()
+        {
+            _employeeManager.GetAllEmployees();
+        }
+
     }
 }

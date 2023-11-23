@@ -48,7 +48,7 @@ namespace DataAccessFakes
                 Active = true,
                 Roles = new List<string>()
             });
-                         
+
             passwordHashes.Add("9c9064c59f1ffa2e174ee754d2979be80dd30db552ec03e7e327e9b1a4bd594e");
             passwordHashes.Add("bad hash");
             passwordHashes.Add("bad hash");
@@ -99,13 +99,13 @@ namespace DataAccessFakes
 
             foreach (var employee in fakeEmployees)
             {
-                if(employee.EmployeeID == employeeID)
+                if (employee.EmployeeID == employeeID)
                 {
                     roles = employee.Roles;
                     break;
                 }
             }
-            if(roles.Count == 0)
+            if (roles.Count == 0)
             {
                 throw new ArgumentException("No roles found.");
             }
@@ -128,11 +128,35 @@ namespace DataAccessFakes
                 }
 
             }
-            if(rows != 1)
+            if (rows != 1)
             {
                 throw new ArgumentException("Bad email or password.");
             }
             return rows;
+        }
+
+        public List<Employee> SelectAllEmployees()
+        {
+            List<Employee> employees = new List<Employee>();
+
+            for (int i = 0; i < fakeEmployees.Count; i++)
+            {
+                employees.Add(new Employee()
+                {
+                    EmployeeID = fakeEmployees[i].EmployeeID,
+                    Email = fakeEmployees[i].Email,
+                    GivenName = fakeEmployees[i].GivenName,
+                    FamilyName = fakeEmployees[i].FamilyName,
+                    PhoneNumber = fakeEmployees[i].PhoneNumber,
+                    Active = fakeEmployees[i].Active
+                });
+            }
+            if (employees.Count == 0)
+            {
+                throw new ArgumentException("No employees found.");
+            }
+
+            return employees;
         }
 
     }

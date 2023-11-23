@@ -13,5 +13,7 @@ namespace DataAccessInterfaces
         EmployeeVM SelectEmployeeByEmail(string email);
         List<string> SelectRolesByEmployeeID(int employeeID);
         int UpdatePasswordHash(string email, string oldPasswordHash, string newPasswordHash);
+        List<Employee> SelectAllEmployees();
+
     }
 }
