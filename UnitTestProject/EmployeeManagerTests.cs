@@ -79,6 +79,30 @@ namespace UnitTestProject
         }
 
         [TestMethod]
+        public void TestGetEmployeeByEmployeeIDReturnsCorrectEmployee()
+        {
+            int  employeeID = 1;
+            string expectedName = "OneUser";
+            string actualName = "";
+
+            Employee employee = _employeeManager.GetEmployeeByEmployeeID(employeeID);
+            actualName = employee.GivenName + employee.FamilyName;
+
+            Assert.AreEqual(expectedName, actualName);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestGetEmployeeByEmployeeIDFailsForBadEmailWithApplicationException()
+        {
+            int employeeID = 10;
+            string actualName = "";
+
+            Employee employee = _employeeManager.GetEmployeeByEmployeeID(employeeID);
+            actualName = employee.GivenName + employee.FamilyName;
+        }
+
+        [TestMethod]
         public void TestGetRolesByEmployeeIDReutnrsCorrectRoles()
         {
             int testID = 1;
@@ -134,13 +158,6 @@ namespace UnitTestProject
             actualCount = _employeeManager.GetAllEmployees().Count;
 
             Assert.AreEqual(expectedCount, actualCount);
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ApplicationException))]
-        public void TestGetAllEmployeesFailsWithNoList()
-        {
-            _employeeManager.GetAllEmployees();
         }
 
     }

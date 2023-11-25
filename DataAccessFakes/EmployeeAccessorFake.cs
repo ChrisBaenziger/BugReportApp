@@ -93,6 +93,25 @@ namespace DataAccessFakes
             return employeeVM;
         }
 
+        public EmployeeVM SelectEmployeeByEmployeeID(int employeeID)
+        {
+            EmployeeVM employeeVM = null;
+
+            foreach (var employee in fakeEmployees)
+            {
+                if (employee.EmployeeID == employeeID)
+                {
+                    employeeVM = employee;
+                    break;
+                }
+            }
+            if (employeeVM == null)
+            {
+                throw new ArgumentException("Employee ID not found.");
+            }
+            return employeeVM;
+        }
+
         public List<string> SelectRolesByEmployeeID(int employeeID)
         {
             List<string> roles = new List<string>();

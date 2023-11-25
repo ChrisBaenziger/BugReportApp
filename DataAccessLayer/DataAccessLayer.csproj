@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BugReportAccessor.cs" />
     <Compile Include="DBConnectionProvider.cs" />
     <Compile Include="EmployeeAccessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -634,6 +634,44 @@ AS
     END
 GO
 
+print '' print '*** creating sp_select_all_bug_tickets ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_bug_tickets]
+AS
+    BEGIN
+        SELECT  [BugTicketID], [BugDate], [SubmitID], [VersionNumber], [AreaName], 
+            [Description], [Status], [Feature], [AssignedTo], [LastWorkedDate], 
+            [LastWorkedEmployee], [Active]
+        FROM    [BugTicket]
+    END
+GO
+
+print '' print '*** creating sp_select_all_active_bug_tickets ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_active_bug_tickets]
+AS
+    BEGIN
+        SELECT  [BugTicketID], [BugDate], [SubmitID], [VersionNumber], [AreaName], 
+            [Description], [Status], [Feature], [AssignedTo], [LastWorkedDate], 
+            [LastWorkedEmployee], [Active]
+        FROM    [BugTicket]
+        WHERE   [Active] = 1
+    END
+GO
+
+print '' print '*** creating sp_select_all_inactive_bug_tickets ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_all_inactive_bug_tickets]
+AS
+    BEGIN
+        SELECT  [BugTicketID], [BugDate], [SubmitID], [VersionNumber], [AreaName], 
+            [Description], [Status], [Feature], [AssignedTo], [LastWorkedDate], 
+            [LastWorkedEmployee], [Active]
+        FROM    [BugTicket]
+        WHERE   [Active] = 0
+    END
+GO
+
 print '' print '*** creating sp_select_active_bug_ticket_by_BugTicketID ***'
 GO
 CREATE PROCEDURE [dbo].[sp_select_active_bug_ticket_by_BugTicketID]
@@ -766,6 +804,20 @@ AS
             [LastWorkedEmployee], [Active]
         FROM    [BugTicket]
         WHERE   @AssignedTo = [AssignedTo]
+            AND [Active] = 1
+    END
+GO
+
+print '' print '*** creating sp_select_active_bug_ticket_by_unassigned ***'
+GO
+CREATE PROCEDURE [dbo].[sp_select_active_bug_ticket_by_unassigned]
+AS
+    BEGIN
+        SELECT  [BugTicketID], [BugDate], [SubmitID], [VersionNumber], [AreaName], 
+            [Description], [Status], [Feature], [AssignedTo], [LastWorkedDate], 
+            [LastWorkedEmployee], [Active]
+        FROM    [BugTicket]
+        WHERE   [AssignedTo] IS NULL
             AND [Active] = 1
     END
 GO
@@ -1520,9 +1572,9 @@ AS
     END
 GO
 
-print '' print '*** creating sp_select_bug_status ***'
+print '' print '*** creating sp_select_all_bug_status ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_bug_status]
+CREATE PROCEDURE [dbo].[sp_select_all_bug_status]
 AS
     BEGIN
         SELECT [Status], [Active]
@@ -1766,9 +1818,9 @@ AS
     END
 GO
 
-print '' print '*** creating sp_select_product_areas ***'
+print '' print '*** creating sp_select_all_product_areas ***'
 GO
-CREATE PROCEDURE [dbo].[sp_select_product_areas]
+CREATE PROCEDURE [dbo].[sp_select_all_product_areas]
 AS
     BEGIN
         SELECT [AreaName], [FirstVersionNumber], [Active]

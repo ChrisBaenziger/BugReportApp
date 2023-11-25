@@ -91,6 +91,54 @@ namespace DataAccessLayer
             return employeeVM;
         }
 
+        public EmployeeVM SelectEmployeeByEmployeeID(int employeeID)
+        {
+            EmployeeVM employeeVM = null;
+
+            var conn = DBConnectionProvider.GetConnection();
+            var cmdText = "sp_select_employee_by_employeeID";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@EmployeeID", SqlDbType.Int);
+            cmd.Parameters["@EmployeeID"].Value = employeeID;
+
+            try
+            {
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    reader.Read();
+
+                    employeeVM = new EmployeeVM()
+                    {
+                        EmployeeID = reader.GetInt32(0),
+                        GivenName = reader.GetString(1),
+                        FamilyName = reader.GetString(2),
+                        PhoneNumber = reader.GetString(3),
+                        Email = reader.GetString(4),
+                        Active = reader.GetBoolean(5)
+                    };
+                }
+                else
+                {
+                    throw new ArgumentException("Employee ID not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return employeeVM;
+        }
+
         public List<string> SelectRolesByEmployeeID(int employeeID)
         {
             List<string> roles = new List<string>();
@@ -198,7 +246,7 @@ namespace DataAccessLayer
                 }
                 else
                 {
-                    throw new ApplicationException("No employees found.")
+                    throw new ApplicationException("No employees found.");
                 }
             }
             catch (Exception ex)

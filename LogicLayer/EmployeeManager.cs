@@ -55,6 +55,21 @@ namespace LogicLayer
             return employeeVM;
         }
 
+        public EmployeeVM GetEmployeeByEmployeeID(int employeeID)
+        {
+            EmployeeVM employeeVM = null;
+
+            try
+            {
+                employeeVM = _employeeAccessor.SelectEmployeeByEmployeeID(employeeID);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("User not found.", ex);
+            }
+            return employeeVM;
+        }
+
         public List<string> GetRolesByEmployeeID(int employeeID)
         {
             List<string> roles = null;

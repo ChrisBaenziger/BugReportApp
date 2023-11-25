@@ -7,27 +7,26 @@ using DataObjects;
 
 namespace LogicLayer
 {
-    internal interface IBugReportManager
+    public interface IBugReportManager
     {
         // Get one bug ticket
         BugTicketVM GetBugTicket(int bugTicketID);
 
         // Get bug tickets by 
-        List<BugTicket> GetAllBugTickets();
-        List<BugTicket> GetBugTicketsByVersion(string version);
-        List<BugTicket> GetBugTicketsByArea(string area);
-        List<BugTicket> GetBugTicketsByStatus(string status);
-        List<BugTicket> GetBugTicketsByFeature(string feature);
-        List<BugTicket> GetBugTicketsByAssignedTo(int assignedTo);
+        List<BugTicketVM> GetAllBugTickets();
+        List<BugTicketVM> GetBugTicketsByVersion(string version);
+        List<BugTicketVM> GetBugTicketsByArea(string area);
+        List<BugTicketVM> GetBugTicketsByStatus(string status);
+        List<BugTicketVM> GetBugTicketsByFeature(string feature);
+        List<BugTicketVM> GetBugTicketsByAssignedTo(int assignedTo);
         
         // Get list labels
         List<string> GetAllVersions();
         List<string> GetAllAreas();
         List<string> GetAllStatus();
-        List<string> GetAllFreatures();
+        List<string> GetAllFeatures();
         
-
-        // 
+        // Modify Bug Tickets
         bool UpdateBugReport (BugTicket oldBugTicket, BugTicket newBugTicket);
     }
 }

@@ -10,7 +10,7 @@ namespace DataObjects
     {
         public int BugTicketID { get; set; }
         public DateTime BugDate { get; set; }
-        public int SubtmitID { get; set; }
+        public int SubmitID { get; set; }
         public string VersionNumber { get; set; }
         public string AreaName { get; set; }
         public string Description { get; set; }
@@ -22,7 +22,7 @@ namespace DataObjects
         public bool Active { get; set; }
     }
 
-    public class BugTicketVM
+    public class BugTicketVM : BugTicket
     {
         public string AssignedToName { get; set; }
 
