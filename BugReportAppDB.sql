@@ -146,15 +146,15 @@ CREATE TABLE [dbo].[Feature] (
 );
 GO
 
-/* Test insert code worked 2023-10-05
+-- Test insert code worked 2023-10-05
 print '' print '*** instert into feature list table ***'
 GO
 INSERT INTO [dbo].[Feature]
         ([FeatureName], [FirstVersionNumber], [FeatureArea], [FeatureDescription], [LastVersionNumber])
     VALUES
-        ('Test', '1.01.001', 'Core', 'Testing', null);
+        ('Test', '0.01.001', 'Core', 'Testing', null);
 GO
-*/
+
 
 print '' print '*** creating employee table ***'
 GO
@@ -267,16 +267,16 @@ CREATE TABLE [dbo].[Customer] (
 );
 GO
 
-/* Test insert code worked 2023-10-05 
+-- Test insert code worked 2023-10-05 
 print '' print '*** instert customer into ***'
 GO
 INSERT INTO [dbo].[Customer]
         ([GivenName], [FamilyName], [Email], [VersionNumber])
     VALUES
-        ('James', 'Williams', 'jwiliams@test.com', '1.01.001'),
+        ('James', 'Williams', 'jwiliams@test.com', '0.01.001'),
         ('Jacob', 'Wendt', 'jwendt@test.com', null);
 GO
-*/
+
 
 print '' print '*** creating computer information table ***'
 GO
@@ -296,7 +296,7 @@ CREATE TABLE [dbo].[ComputerInformation] (
 );
 GO
 
-/* Test insert code worked 2023-10-05 
+-- Test insert code worked 2023-10-05 
 print '' print '*** instert into computer information table ***'
 GO
 INSERT INTO [dbo].[ComputerInformation]
@@ -305,7 +305,7 @@ INSERT INTO [dbo].[ComputerInformation]
         (100001, null, null, 'Windows', null, 'Nvidia 3080', 'DDR5', 32, '127.0.0.1'),
         (100002, null, null, 'Windows', null, 'Nvidia 3070', 'DDR5', 16, '127.0.0.2');
 GO
-*/
+
 
 print '' print '*** creating bug ticket table ***'
 GO
@@ -339,16 +339,16 @@ CREATE TABLE [dbo].[BugTicket] (
 );
 GO
 
-/* Test insert code worked 2023-10-05 
+-- Test insert code worked 2023-10-05 
 print '' print '*** instert into bug ticket table ***'
 GO
 INSERT INTO [dbo].[BugTicket]
         ([SubmitID], [VersionNumber], [AreaName], [Description])
     VALUES
-        (100000, '1.01.001', 'Core', 'Test description'),
-        (100001, '1.02.001', 'Other', 'Test two descriptoin');
+        (100000, '0.01.001', 'Core', 'Test description'),
+        (100001, '0.01.001', 'Other', 'Test two descriptoin');
 GO
-*/
+
 
 print '' print '*** creating bug ticket archive table ***'
 GO

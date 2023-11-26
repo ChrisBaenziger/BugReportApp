@@ -254,5 +254,52 @@ namespace BugReportApp
             MessageBox.Show("Bug Reporting App\nBy: Chris Baenziger\n\nFinal project for .NET II\n" +
                 "Kirkwood Community College", "About", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
+        private void tabProgrammer_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if(datProgrammerBugList.ItemsSource == null)
+            {
+                var bugReportManager = new BugReportManager();
+
+                try
+                {
+                    datProgrammerBugList.ItemsSource = bugReportManager.GetAllBugTickets();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\n" + ex.InnerException.Message);
+                }
+            }
+        }
+
+        private void datProgrammerBugList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var bugTicket = datProgrammerBugList.SelectedItem as BugTicketVM;
+
+            var detailWindow = new AddEditWindow(bugTicket.BugTicketID);
+            detailWindow.ShowDialog();
+        }
+
+        private void tabSrProgrammer_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (datSrProgrammerBugList.ItemsSource == null)
+            {
+                var bugReportManager = new BugReportManager();
+
+                try
+                {
+                    datSrProgrammerBugList.ItemsSource = bugReportManager.GetAllBugTickets();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\n" + ex.InnerException.Message);
+                }
+            }
+        }
+
+        private void datSrProgrammerBugList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            // not implemented
+        }
     } // end main window class
 }

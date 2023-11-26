@@ -13,7 +13,7 @@ namespace LogicLayer
     {
         IBugReportAccessor _bugReportAccessor = null;
         IEmployeeAccessor _employeeAccessor = null;
-        
+
         public BugReportManager()
         {
             _bugReportAccessor = new BugReportAccessor();
@@ -28,129 +28,186 @@ namespace LogicLayer
 
         public List<string> GetAllAreas()
         {
-            return _bugReportAccessor.SelectAllAreas();
+            List<string> areas = new List<string>();
+
+            try
+            {
+                areas = _bugReportAccessor.SelectAllAreas();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error retireving program areas.", ex);
+            }
+            return areas;
         }
 
         public List<BugTicketVM> GetAllBugTickets()
         {
-            List<Employee> employees = _employeeAccessor.SelectAllEmployees();
-            List<BugTicket> bugTickets = _bugReportAccessor.SelectAllBugTickets();
             List<BugTicketVM> bugTicketVMs = new List<BugTicketVM>();
-            bugTicketVMs = CreateBugTicketVMListFromBugTicketAndEmployees(employees, bugTickets);
 
-            return bugTicketVMs;
-        }
-
-        private List<BugTicketVM> CreateBugTicketVMListFromBugTicketAndEmployees(List<Employee> employees, List<BugTicket> bugTickets)
-        {
-            List < BugTicketVM > bugTicketsVM = new List<BugTicketVM>();
-            foreach (var ticket in bugTickets)
+            try
             {
-                string assignedToName = "";
-                string lastWorkedName = "";
-
-                foreach (var employee in employees)
+                List<Employee> employees = _employeeAccessor.SelectAllEmployees();
+                List<BugTicket> bugTickets = new List<BugTicket>();
+                try
                 {
-                    if (employee.EmployeeID == ticket.AssignedTo)
-                    {
-                        assignedToName = employee.GivenName + " " + employee.FamilyName;
-                    }
-                    if (employee.EmployeeID == ticket.LastWorkedEmployee)
-                    {
-                        lastWorkedName = employee.GivenName + " " + employee.FamilyName;
-                    }
+                    bugTickets = _bugReportAccessor.SelectAllBugTickets();
+
                 }
-
-                bugTicketsVM.Add(new BugTicketVM()
+                catch (Exception ex)
                 {
-                    BugTicketID = ticket.BugTicketID,
-                    BugDate = ticket.BugDate,
-                    SubmitID = ticket.SubmitID,
-                    VersionNumber = ticket.VersionNumber,
-                    AreaName = ticket.AreaName,
-                    Description = ticket.Description,
-                    Status = ticket.Status,
-                    Feature = ticket.Feature,
-                    AssignedTo = ticket.AssignedTo,
-                    LastWorkedDate = ticket.LastWorkedDate,
-                    LastWorkedEmployee = ticket.LastWorkedEmployee,
-                    Active = ticket.Active,
-                    AssignedToName = assignedToName,
-                    LastWorkedName = lastWorkedName
-                });
+
+                    throw new ApplicationException("bugTickets error", ex);
+                }
+                bugTicketVMs = CreateBugTicketVMListFromBugTicketAndEmployees(employees, bugTickets);
             }
-            return bugTicketsVM;
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error retrieving tickets.", ex);
+            }
+            return bugTicketVMs;
         }
 
         public List<string> GetAllFeatures()
         {
-            return _bugReportAccessor.SelectAllFeatures();
+            List<string> features = new List<string>();
+            try
+            {
+                features = _bugReportAccessor.SelectAllFeatures();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error retrieving features.", ex);
+            }
+            return features;
         }
 
         public List<string> GetAllStatus()
         {
-            return _bugReportAccessor.SelectAllStatus();
+            List<string> statuses = new List<string>();
+            try
+            {
+                statuses = _bugReportAccessor.SelectAllStatus();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error retrieving statuses.", ex);
+            }
+            return statuses;
         }
 
         public List<string> GetAllVersions()
         {
-            return _bugReportAccessor.SelectAllVersions();
+            List<string> versions = new List<string>();
+            try
+            {
+                versions = _bugReportAccessor.SelectAllVersions();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error retrieving versions.", ex);
+            }
+            return versions;
         }
 
         public BugTicketVM GetBugTicket(int bugTicketID)
         {
-            BugTicket bugTicket = _bugReportAccessor.SelectBugTicketByBugTicketID(bugTicketID);
-            BugTicketVM bugTicketVM = CreateBugTicketVMFromBugTicket(bugTicket);
+            BugTicketVM bugTicketVM = null;
+            try
+            {
+                BugTicket bugTicket = _bugReportAccessor.SelectBugTicketByBugTicketID(bugTicketID);
+                bugTicketVM = CreateBugTicketVMFromBugTicket(bugTicket);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error retrieving bug ticket.", ex);
+            }
             return bugTicketVM;
         }
 
         public List<BugTicketVM> GetBugTicketsByArea(string area)
         {
-            List<Employee> employees = _employeeAccessor.SelectAllEmployees();
-            List<BugTicket> bugTickets = _bugReportAccessor.SelectBugTicketsByArea(area);
             List<BugTicketVM> bugTicketVMs = new List<BugTicketVM>();
-            bugTicketVMs = CreateBugTicketVMListFromBugTicketAndEmployees(employees, bugTickets);
 
+            try
+            {
+                List<Employee> employees = _employeeAccessor.SelectAllEmployees();
+                List<BugTicket> bugTickets = _bugReportAccessor.SelectBugTicketsByArea(area);
+                bugTicketVMs = CreateBugTicketVMListFromBugTicketAndEmployees(employees, bugTickets);
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("Error retrieving tickets.", ex);
+            }
             return bugTicketVMs;
         }
 
         public List<BugTicketVM> GetBugTicketsByAssignedTo(int assignedTo)
         {
-            List<Employee> employees = _employeeAccessor.SelectAllEmployees();
-            List<BugTicket> bugTickets = _bugReportAccessor.SelectBugTicketByAssignedTo(assignedTo);
             List<BugTicketVM> bugTicketVMs = new List<BugTicketVM>();
-            bugTicketVMs = CreateBugTicketVMListFromBugTicketAndEmployees(employees, bugTickets);
 
+            try
+            {
+                List<Employee> employees = _employeeAccessor.SelectAllEmployees();
+                List<BugTicket> bugTickets = _bugReportAccessor.SelectBugTicketByAssignedTo(assignedTo);
+                bugTicketVMs = CreateBugTicketVMListFromBugTicketAndEmployees(employees, bugTickets);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error retrieving tickets.", ex);
+            }
             return bugTicketVMs;
         }
 
         public List<BugTicketVM> GetBugTicketsByFeature(string feature)
         {
-            List<Employee> employees = _employeeAccessor.SelectAllEmployees();
-            List<BugTicket> bugTickets = _bugReportAccessor.SelectBugTicketByFeature(feature);
             List<BugTicketVM> bugTicketVMs = new List<BugTicketVM>();
-            bugTicketVMs = CreateBugTicketVMListFromBugTicketAndEmployees(employees, bugTickets);
 
+            try
+            {
+                List<Employee> employees = _employeeAccessor.SelectAllEmployees();
+                List<BugTicket> bugTickets = _bugReportAccessor.SelectBugTicketByFeature(feature);
+                bugTicketVMs = CreateBugTicketVMListFromBugTicketAndEmployees(employees, bugTickets);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error retrieving tickets.", ex);
+            }
             return bugTicketVMs;
         }
 
         public List<BugTicketVM> GetBugTicketsByStatus(string status)
         {
-            List<Employee> employees = _employeeAccessor.SelectAllEmployees();
-            List<BugTicket> bugTickets = _bugReportAccessor.SelectBugTicketsByStatus(status);
             List<BugTicketVM> bugTicketVMs = new List<BugTicketVM>();
-            bugTicketVMs = CreateBugTicketVMListFromBugTicketAndEmployees(employees, bugTickets);
 
+            try
+            {
+                List<Employee> employees = _employeeAccessor.SelectAllEmployees();
+                List<BugTicket> bugTickets = _bugReportAccessor.SelectBugTicketsByStatus(status);
+                bugTicketVMs = CreateBugTicketVMListFromBugTicketAndEmployees(employees, bugTickets);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error retrieving tickets.", ex);
+            }
             return bugTicketVMs;
         }
 
         public List<BugTicketVM> GetBugTicketsByVersion(string version)
         {
-            List<Employee> employees = _employeeAccessor.SelectAllEmployees();
-            List<BugTicket> bugTickets = _bugReportAccessor.SelectBugTicketsByVersion(version);
             List<BugTicketVM> bugTicketVMs = new List<BugTicketVM>();
-            bugTicketVMs = CreateBugTicketVMListFromBugTicketAndEmployees(employees, bugTickets);
 
+            try
+            {
+                List<Employee> employees = _employeeAccessor.SelectAllEmployees();
+                List<BugTicket> bugTickets = _bugReportAccessor.SelectBugTicketsByVersion(version);
+                bugTicketVMs = CreateBugTicketVMListFromBugTicketAndEmployees(employees, bugTickets);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error retrieving tickets.", ex);
+            }
             return bugTicketVMs;
         }
 
@@ -161,26 +218,105 @@ namespace LogicLayer
 
         private BugTicketVM CreateBugTicketVMFromBugTicket(BugTicket bugTicket)
         {
-            EmployeeVM assignedTo = _employeeAccessor.SelectEmployeeByEmployeeID(bugTicket.AssignedTo);
-            EmployeeVM lastWorked = _employeeAccessor.SelectEmployeeByEmployeeID(bugTicket.LastWorkedEmployee);
-
-            return new BugTicketVM()
+            BugTicketVM bugTicketVM = new BugTicketVM();
+            try
             {
-                BugTicketID = bugTicket.BugTicketID,
-                BugDate = bugTicket.BugDate,
-                SubmitID = bugTicket.SubmitID,
-                VersionNumber = bugTicket.VersionNumber,
-                AreaName = bugTicket.AreaName,
-                Description = bugTicket.Description,
-                Status = bugTicket.Status,
-                Feature = bugTicket.Feature,
-                AssignedTo = bugTicket.AssignedTo,
-                LastWorkedDate = bugTicket.LastWorkedDate,
-                LastWorkedEmployee = bugTicket.LastWorkedEmployee,
-                Active = bugTicket.Active,
-                AssignedToName = assignedTo.GivenName + " " + assignedTo.FamilyName,
-                LastWorkedName = lastWorked.GivenName + " " + lastWorked.FamilyName
-            };
+                if(bugTicket.AssignedTo == 1)
+                {
+                    bugTicketVM.AssignedToName = "Unassigned";
+                } 
+                else
+                {
+                    EmployeeVM assignedTo = _employeeAccessor.SelectEmployeeByEmployeeID(bugTicket.AssignedTo);
+                    bugTicketVM.AssignedToName = assignedTo.GivenName + " " + assignedTo.FamilyName;
+                }
+
+                if(bugTicket.LastWorkedEmployee == 1)
+                {
+                    bugTicketVM.LastWorkedName = "Unassigned";
+                }
+                else
+                {
+                    EmployeeVM lastWorked = _employeeAccessor.SelectEmployeeByEmployeeID(bugTicket.LastWorkedEmployee);
+                    bugTicketVM.LastWorkedName = lastWorked.GivenName + " " + lastWorked.FamilyName;
+                }
+
+                bugTicketVM.BugTicketID = bugTicket.BugTicketID;
+                bugTicketVM.BugDate = bugTicket.BugDate;
+                bugTicketVM.SubmitID = bugTicket.SubmitID;
+                bugTicketVM.VersionNumber = bugTicket.VersionNumber;
+                bugTicketVM.AreaName = bugTicket.AreaName;
+                bugTicketVM.Description = bugTicket.Description;
+                bugTicketVM.Status = bugTicket.Status;
+                bugTicketVM.Feature = bugTicket.Feature;
+                bugTicketVM.AssignedTo = bugTicket.AssignedTo;
+                bugTicketVM.LastWorkedDate = bugTicket.LastWorkedDate;
+                bugTicketVM.LastWorkedEmployee = bugTicket.LastWorkedEmployee;
+                bugTicketVM.Active = bugTicket.Active;
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error converting ticket.", ex);
+            }
+            return bugTicketVM;
+        }
+
+        private List<BugTicketVM> CreateBugTicketVMListFromBugTicketAndEmployees(List<Employee> employees, List<BugTicket> bugTickets)
+        {
+            List<BugTicketVM> bugTicketsVM = new List<BugTicketVM>();
+
+            try
+            {
+                foreach (var ticket in bugTickets)
+                {
+                    string assignedToName = "";
+                    string lastWorkedName = "";
+
+                    foreach (var employee in employees)
+                    {
+                        if (employee.EmployeeID == ticket.AssignedTo)
+                        {
+                            assignedToName = employee.GivenName + " " + employee.FamilyName;
+                        }
+                        else
+                        {
+                            assignedToName = "Unassigned";
+                        }
+                        if (employee.EmployeeID == ticket.LastWorkedEmployee)
+                        {
+                            lastWorkedName = employee.GivenName + " " + employee.FamilyName;
+                        }
+                        else
+                        {
+                            lastWorkedName = "Unassigned";
+                        }
+                    }
+
+                    bugTicketsVM.Add(new BugTicketVM()
+                    {
+                        BugTicketID = ticket.BugTicketID,
+                        BugDate = ticket.BugDate,
+                        SubmitID = ticket.SubmitID,
+                        VersionNumber = ticket.VersionNumber,
+                        AreaName = ticket.AreaName,
+                        Description = ticket.Description,
+                        Status = ticket.Status,
+                        Feature = ticket.Feature,
+                        AssignedTo = ticket.AssignedTo,
+                        LastWorkedDate = ticket.LastWorkedDate,
+                        LastWorkedEmployee = ticket.LastWorkedEmployee,
+                        Active = ticket.Active,
+                        AssignedToName = assignedToName,
+                        LastWorkedName = lastWorkedName
+                    });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error populating list.", ex);
+            }
+            return bugTicketsVM;
         }
     }
 }

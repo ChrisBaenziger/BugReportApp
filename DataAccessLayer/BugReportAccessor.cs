@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Threading.Tasks;
+using System.Net.Sockets;
 
 namespace DataAccessLayer
 {
@@ -57,7 +58,7 @@ namespace DataAccessLayer
             List<BugTicket> bugTickets = null;
 
             var conn = DBConnectionProvider.GetConnection();
-            var cmdText = "sp_select_all_bug_active_bug_tickets";
+            var cmdText = "sp_select_all_active_bug_tickets";
             var cmd = new SqlCommand(cmdText, conn);
             cmd.CommandType = CommandType.StoredProcedure;
 
@@ -72,21 +73,57 @@ namespace DataAccessLayer
                     bugTickets = new List<BugTicket>();
                     while (reader.Read())
                     {
-                        bugTickets.Add(new BugTicket()
+                        BugTicket bugTicket= new BugTicket();
+
+                        bugTicket.BugTicketID = reader.GetInt32(0);
+                        bugTicket.BugDate = reader.GetDateTime(1);
+                        bugTicket.SubmitID = reader.GetInt32(2);
+                        bugTicket.VersionNumber = reader.GetString(3);
+                        bugTicket.AreaName = reader.GetString(4);
+                        bugTicket.Description = reader.GetString(5);
+                        bugTicket.Status = reader.GetString(6);
+                        bugTicket.Active = reader.GetBoolean(11);
+
+                        if (reader.IsDBNull(7))
                         {
-                            BugTicketID = reader.GetInt32(0),
-                            BugDate = reader.GetDateTime(1),
-                            SubmitID = reader.GetInt32(2),
-                            VersionNumber = reader.GetString(3),
-                            AreaName = reader.GetString(4),
-                            Description = reader.GetString(5),
-                            Status = reader.GetString(6),
-                            Feature = reader.GetString(7),
-                            AssignedTo = reader.GetInt32(8),
-                            LastWorkedDate = reader.GetDateTime(9),
-                            LastWorkedEmployee = reader.GetInt32(10),
-                            Active = reader.GetBoolean(11)
-                        });
+                            bugTicket.Feature = "";
+                        }
+                        else
+                        {
+                            bugTicket.Feature = reader.GetString(7);
+                        }
+
+                        if (reader.IsDBNull(8))
+                        {
+                            bugTicket.AssignedTo = 1;
+                        }
+                        else
+                        {
+                            bugTicket.AssignedTo = reader.GetInt32(8);
+
+                        }
+
+                        if (reader.IsDBNull(9))
+                        {
+                            bugTicket.LastWorkedDate = new DateTime();
+                        }
+                        else
+                        {
+                            bugTicket.LastWorkedDate = reader.GetDateTime(9);
+                        }
+
+                        if (reader.IsDBNull(10))
+                        {
+                            bugTicket.LastWorkedEmployee = 1;
+                        }
+                        else
+                        {
+                            bugTicket.LastWorkedEmployee = reader.GetInt32(10);
+                        }
+
+                       
+                        
+                        bugTickets.Add(bugTicket);
                     }
                 }
                 else
@@ -248,21 +285,55 @@ namespace DataAccessLayer
                     bugTickets = new List<BugTicket>();
                     while (reader.Read())
                     {
-                        bugTickets.Add(new BugTicket()
+                        BugTicket bugTicket = new BugTicket();
+
+                        bugTicket.BugTicketID = reader.GetInt32(0);
+                        bugTicket.BugDate = reader.GetDateTime(1);
+                        bugTicket.SubmitID = reader.GetInt32(2);
+                        bugTicket.VersionNumber = reader.GetString(3);
+                        bugTicket.AreaName = reader.GetString(4);
+                        bugTicket.Description = reader.GetString(5);
+                        bugTicket.Status = reader.GetString(6);
+                        bugTicket.Active = reader.GetBoolean(11);
+
+                        if (reader.IsDBNull(7))
                         {
-                            BugTicketID = reader.GetInt32(0),
-                            BugDate = reader.GetDateTime(1),
-                            SubmitID = reader.GetInt32(2),
-                            VersionNumber = reader.GetString(3),
-                            AreaName = reader.GetString(4),
-                            Description = reader.GetString(5),
-                            Status = reader.GetString(6),
-                            Feature = reader.GetString(7),
-                            AssignedTo = reader.GetInt32(8),
-                            LastWorkedDate = reader.GetDateTime(9),
-                            LastWorkedEmployee = reader.GetInt32(10),
-                            Active = reader.GetBoolean(11)
-                        });
+                            bugTicket.Feature = "";
+                        }
+                        else
+                        {
+                            bugTicket.Feature = reader.GetString(7);
+                        }
+
+                        if (reader.IsDBNull(8))
+                        {
+                            bugTicket.AssignedTo = 1;
+                        }
+                        else
+                        {
+                            bugTicket.AssignedTo = reader.GetInt32(8);
+
+                        }
+
+                        if (reader.IsDBNull(9))
+                        {
+                            bugTicket.LastWorkedDate = new DateTime();
+                        }
+                        else
+                        {
+                            bugTicket.LastWorkedDate = reader.GetDateTime(9);
+                        }
+
+                        if (reader.IsDBNull(10))
+                        {
+                            bugTicket.LastWorkedEmployee = 1;
+                        }
+                        else
+                        {
+                            bugTicket.LastWorkedEmployee = reader.GetInt32(10);
+                        }
+
+                        bugTickets.Add(bugTicket);
                     }
                 }
                 else
@@ -301,21 +372,54 @@ namespace DataAccessLayer
 
                 if (reader.HasRows)
                 {
-                    bugTicket = new BugTicket()
+                    reader.Read();
+                    bugTicket = new BugTicket();
+
+                    bugTicket.BugTicketID = reader.GetInt32(0);
+                    bugTicket.BugDate = reader.GetDateTime(1);
+                    bugTicket.SubmitID = reader.GetInt32(2);
+                    bugTicket.VersionNumber = reader.GetString(3);
+                    bugTicket.AreaName = reader.GetString(4);
+                    bugTicket.Description = reader.GetString(5);
+                    bugTicket.Status = reader.GetString(6);
+                    bugTicket.Active = reader.GetBoolean(11);
+
+                    if (reader.IsDBNull(7))
                     {
-                        BugTicketID = reader.GetInt32(0),
-                        BugDate = reader.GetDateTime(1),
-                        SubmitID = reader.GetInt32(2),
-                        VersionNumber = reader.GetString(3),
-                        AreaName = reader.GetString(4),
-                        Description = reader.GetString(5),
-                        Status = reader.GetString(6),
-                        Feature = reader.GetString(7),
-                        AssignedTo = reader.GetInt32(8),
-                        LastWorkedDate = reader.GetDateTime(9),
-                        LastWorkedEmployee = reader.GetInt32(10),
-                        Active = reader.GetBoolean(11)
-                    };
+                        bugTicket.Feature = "";
+                    }
+                    else
+                    {
+                        bugTicket.Feature = reader.GetString(7);
+                    }
+
+                    if (reader.IsDBNull(8))
+                    {
+                        bugTicket.AssignedTo = 1;
+                    }
+                    else
+                    {
+                        bugTicket.AssignedTo = reader.GetInt32(8);
+
+                    }
+
+                    if (reader.IsDBNull(9))
+                    {
+                        bugTicket.LastWorkedDate = new DateTime();
+                    }
+                    else
+                    {
+                        bugTicket.LastWorkedDate = reader.GetDateTime(9);
+                    }
+
+                    if (reader.IsDBNull(10))
+                    {
+                        bugTicket.LastWorkedEmployee = 1;
+                    }
+                    else
+                    {
+                        bugTicket.LastWorkedEmployee = reader.GetInt32(10);
+                    }
                 }
                 else
                 {
@@ -356,21 +460,55 @@ namespace DataAccessLayer
                     bugTickets = new List<BugTicket>();
                     while (reader.Read())
                     {
-                        bugTickets.Add(new BugTicket()
+                        BugTicket bugTicket = new BugTicket();
+
+                        bugTicket.BugTicketID = reader.GetInt32(0);
+                        bugTicket.BugDate = reader.GetDateTime(1);
+                        bugTicket.SubmitID = reader.GetInt32(2);
+                        bugTicket.VersionNumber = reader.GetString(3);
+                        bugTicket.AreaName = reader.GetString(4);
+                        bugTicket.Description = reader.GetString(5);
+                        bugTicket.Status = reader.GetString(6);
+                        bugTicket.Active = reader.GetBoolean(11);
+
+                        if (reader.IsDBNull(7))
                         {
-                            BugTicketID = reader.GetInt32(0),
-                            BugDate = reader.GetDateTime(1),
-                            SubmitID = reader.GetInt32(2),
-                            VersionNumber = reader.GetString(3),
-                            AreaName = reader.GetString(4),
-                            Description = reader.GetString(5),
-                            Status = reader.GetString(6),
-                            Feature = reader.GetString(7),
-                            AssignedTo = reader.GetInt32(8),
-                            LastWorkedDate = reader.GetDateTime(9),
-                            LastWorkedEmployee = reader.GetInt32(10),
-                            Active = reader.GetBoolean(11)
-                        });
+                            bugTicket.Feature = "";
+                        }
+                        else
+                        {
+                            bugTicket.Feature = reader.GetString(7);
+                        }
+
+                        if (reader.IsDBNull(8))
+                        {
+                            bugTicket.AssignedTo = 1;
+                        }
+                        else
+                        {
+                            bugTicket.AssignedTo = reader.GetInt32(8);
+
+                        }
+
+                        if (reader.IsDBNull(9))
+                        {
+                            bugTicket.LastWorkedDate = new DateTime();
+                        }
+                        else
+                        {
+                            bugTicket.LastWorkedDate = reader.GetDateTime(9);
+                        }
+
+                        if (reader.IsDBNull(10))
+                        {
+                            bugTicket.LastWorkedEmployee = 1;
+                        }
+                        else
+                        {
+                            bugTicket.LastWorkedEmployee = reader.GetInt32(10);
+                        }
+
+                        bugTickets.Add(bugTicket);
                     }
                 }
                 else
@@ -412,21 +550,55 @@ namespace DataAccessLayer
                     bugTickets = new List<BugTicket>();
                     while (reader.Read())
                     {
-                        bugTickets.Add(new BugTicket()
+                        BugTicket bugTicket = new BugTicket();
+
+                        bugTicket.BugTicketID = reader.GetInt32(0);
+                        bugTicket.BugDate = reader.GetDateTime(1);
+                        bugTicket.SubmitID = reader.GetInt32(2);
+                        bugTicket.VersionNumber = reader.GetString(3);
+                        bugTicket.AreaName = reader.GetString(4);
+                        bugTicket.Description = reader.GetString(5);
+                        bugTicket.Status = reader.GetString(6);
+                        bugTicket.Active = reader.GetBoolean(11);
+
+                        if (reader.IsDBNull(7))
                         {
-                            BugTicketID = reader.GetInt32(0),
-                            BugDate = reader.GetDateTime(1),
-                            SubmitID = reader.GetInt32(2),
-                            VersionNumber = reader.GetString(3),
-                            AreaName = reader.GetString(4),
-                            Description = reader.GetString(5),
-                            Status = reader.GetString(6),
-                            Feature = reader.GetString(7),
-                            AssignedTo = reader.GetInt32(8),
-                            LastWorkedDate = reader.GetDateTime(9),
-                            LastWorkedEmployee = reader.GetInt32(10),
-                            Active = reader.GetBoolean(11)
-                        });
+                            bugTicket.Feature = "";
+                        }
+                        else
+                        {
+                            bugTicket.Feature = reader.GetString(7);
+                        }
+
+                        if (reader.IsDBNull(8))
+                        {
+                            bugTicket.AssignedTo = 1;
+                        }
+                        else
+                        {
+                            bugTicket.AssignedTo = reader.GetInt32(8);
+
+                        }
+
+                        if (reader.IsDBNull(9))
+                        {
+                            bugTicket.LastWorkedDate = new DateTime();
+                        }
+                        else
+                        {
+                            bugTicket.LastWorkedDate = reader.GetDateTime(9);
+                        }
+
+                        if (reader.IsDBNull(10))
+                        {
+                            bugTicket.LastWorkedEmployee = 1;
+                        }
+                        else
+                        {
+                            bugTicket.LastWorkedEmployee = reader.GetInt32(10);
+                        }
+
+                        bugTickets.Add(bugTicket);
                     }
                 }
                 else
@@ -468,21 +640,55 @@ namespace DataAccessLayer
                     bugTickets = new List<BugTicket>();
                     while (reader.Read())
                     {
-                        bugTickets.Add(new BugTicket()
+                        BugTicket bugTicket = new BugTicket();
+
+                        bugTicket.BugTicketID = reader.GetInt32(0);
+                        bugTicket.BugDate = reader.GetDateTime(1);
+                        bugTicket.SubmitID = reader.GetInt32(2);
+                        bugTicket.VersionNumber = reader.GetString(3);
+                        bugTicket.AreaName = reader.GetString(4);
+                        bugTicket.Description = reader.GetString(5);
+                        bugTicket.Status = reader.GetString(6);
+                        bugTicket.Active = reader.GetBoolean(11);
+
+                        if (reader.IsDBNull(7))
                         {
-                            BugTicketID = reader.GetInt32(0),
-                            BugDate = reader.GetDateTime(1),
-                            SubmitID = reader.GetInt32(2),
-                            VersionNumber = reader.GetString(3),
-                            AreaName = reader.GetString(4),
-                            Description = reader.GetString(5),
-                            Status = reader.GetString(6),
-                            Feature = reader.GetString(7),
-                            AssignedTo = reader.GetInt32(8),
-                            LastWorkedDate = reader.GetDateTime(9),
-                            LastWorkedEmployee = reader.GetInt32(10),
-                            Active = reader.GetBoolean(11)
-                        });
+                            bugTicket.Feature = "";
+                        }
+                        else
+                        {
+                            bugTicket.Feature = reader.GetString(7);
+                        }
+
+                        if (reader.IsDBNull(8))
+                        {
+                            bugTicket.AssignedTo = 1;
+                        }
+                        else
+                        {
+                            bugTicket.AssignedTo = reader.GetInt32(8);
+
+                        }
+
+                        if (reader.IsDBNull(9))
+                        {
+                            bugTicket.LastWorkedDate = new DateTime();
+                        }
+                        else
+                        {
+                            bugTicket.LastWorkedDate = reader.GetDateTime(9);
+                        }
+
+                        if (reader.IsDBNull(10))
+                        {
+                            bugTicket.LastWorkedEmployee = 1;
+                        }
+                        else
+                        {
+                            bugTicket.LastWorkedEmployee = reader.GetInt32(10);
+                        }
+
+                        bugTickets.Add(bugTicket);
                     }
                 }
                 else
@@ -524,21 +730,55 @@ namespace DataAccessLayer
                     bugTickets = new List<BugTicket>();
                     while (reader.Read())
                     {
-                        bugTickets.Add(new BugTicket()
+                        BugTicket bugTicket = new BugTicket();
+
+                        bugTicket.BugTicketID = reader.GetInt32(0);
+                        bugTicket.BugDate = reader.GetDateTime(1);
+                        bugTicket.SubmitID = reader.GetInt32(2);
+                        bugTicket.VersionNumber = reader.GetString(3);
+                        bugTicket.AreaName = reader.GetString(4);
+                        bugTicket.Description = reader.GetString(5);
+                        bugTicket.Status = reader.GetString(6);
+                        bugTicket.Active = reader.GetBoolean(11);
+
+                        if (reader.IsDBNull(7))
                         {
-                            BugTicketID = reader.GetInt32(0),
-                            BugDate = reader.GetDateTime(1),
-                            SubmitID = reader.GetInt32(2),
-                            VersionNumber = reader.GetString(3),
-                            AreaName = reader.GetString(4),
-                            Description = reader.GetString(5),
-                            Status = reader.GetString(6),
-                            Feature = reader.GetString(7),
-                            AssignedTo = reader.GetInt32(8),
-                            LastWorkedDate = reader.GetDateTime(9),
-                            LastWorkedEmployee = reader.GetInt32(10),
-                            Active = reader.GetBoolean(11)
-                        });
+                            bugTicket.Feature = "";
+                        }
+                        else
+                        {
+                            bugTicket.Feature = reader.GetString(7);
+                        }
+
+                        if (reader.IsDBNull(8))
+                        {
+                            bugTicket.AssignedTo = 1;
+                        }
+                        else
+                        {
+                            bugTicket.AssignedTo = reader.GetInt32(8);
+
+                        }
+
+                        if (reader.IsDBNull(9))
+                        {
+                            bugTicket.LastWorkedDate = new DateTime();
+                        }
+                        else
+                        {
+                            bugTicket.LastWorkedDate = reader.GetDateTime(9);
+                        }
+
+                        if (reader.IsDBNull(10))
+                        {
+                            bugTicket.LastWorkedEmployee = 1;
+                        }
+                        else
+                        {
+                            bugTicket.LastWorkedEmployee = reader.GetInt32(10);
+                        }
+
+                        bugTickets.Add(bugTicket);
                     }
                 }
                 else

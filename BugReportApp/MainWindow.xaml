@@ -13,7 +13,6 @@
             <RowDefinition Height="25" />
             <RowDefinition Height="70" />
             <RowDefinition Height="10" />
-            <RowDefinition Height="35" />
             <RowDefinition />
             <RowDefinition Height="30" />
             <RowDefinition Height="35" />
@@ -81,7 +80,7 @@
         <!-- Main Tabs -->
         <StackPanel x:Name="tabContainer" Grid.Row="3">
             <TabControl x:Name="tabsetMain" Height="1000">
-                <TabItem x:Name="tabProgrammer" Header="Programmer">
+                <TabItem x:Name="tabProgrammer" Header="Programmer" GotFocus="tabProgrammer_GotFocus">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="10"/>
@@ -89,12 +88,15 @@
                             <RowDefinition Height="10"/>
                             <RowDefinition />
                         </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
                         <Label Grid.Row="1" Content="Bug Report List" />
                         <DataGrid x:Name="datProgrammerBugList" Grid.Row="3" SelectionMode="Single" 
-                              IsReadOnly="True" />
+                              IsReadOnly="True" MouseDoubleClick="datProgrammerBugList_MouseDoubleClick" />
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="tabSrProgrammer" Header="Senior Programmer">
+                <TabItem x:Name="tabSrProgrammer" Header="Senior Programmer" GotFocus="tabSrProgrammer_GotFocus">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="10"/>
@@ -104,47 +106,51 @@
                         </Grid.RowDefinitions>
                         <Label Grid.Row="1" Content="Project Lead Tab" />
                         <DataGrid x:Name="datSrProgrammerBugList" Grid.Row="3" SelectionMode="Single" 
-                              IsReadOnly="True" />
+                              IsReadOnly="True" MouseDoubleClick="datSrProgrammerBugList_MouseDoubleClick" />
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tabProjectLead" Header="Project Lead">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="10"/>
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <!-- Review info about the status of bug reports -->
-                        <Label Content="Project Lead Tab" />
+                        <Label Content="Project Lead Tab" Grid.Row="1" />
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tabManager" Header="Manager">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="10"/>
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <!-- Review info about the status of bug reports -->
-                        <Label Content="Manager Tab" />
+                        <Label Content="Manager Tab" Grid.Row="1" />
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tabAdmin" Header="Administration">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="10"/>
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <!-- User and password management -->
-                        <Label Content="Admin Tab" />
+                        <Label Content="Admin Tab" Grid.Row="1" />
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tabSettings" Header="Settings">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="10"/>
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <!-- Settings for the program -->
-                        <Label Content="Settings" />
+                        <Label Content="Settings" Grid.Row="1" />
                     </Grid>
                 </TabItem>
             </TabControl>
@@ -152,7 +158,7 @@
         <!-- End Main Tabs Section -->
 
         <!-- Status Bar Section -->
-        <StatusBar Grid.Row="6">
+        <StatusBar Grid.Row="5">
             <StatusBarItem x:Name="statMessage" 
                            Content="Welcome. Please log in to continue."
                            Padding="20px, 0px" />
