@@ -295,8 +295,18 @@ namespace DataAccessFakes
 
         public bool UpdateBugReport(BugTicket oldBugTicket, BugTicket newBugTicket)
         {
-            throw new NotImplementedException();
+            return true;
+            
         }
 
+        public int AddBugReport(BugTicket bugTicket)
+        {
+            return 5;
+        }
+
+        public List<KeyValuePair<string, string>> SelectStatistics()
+        {
+            return new List<KeyValuePair<string, string>>();
+        }
     }
 }

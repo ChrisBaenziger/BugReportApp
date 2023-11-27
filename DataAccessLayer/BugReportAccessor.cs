@@ -802,5 +802,15 @@ namespace DataAccessLayer
         {
             throw new NotImplementedException();
         }
+
+        public int AddBugReport(BugTicket bugTicket)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<KeyValuePair<string, string>> SelectStatistics() 
+        {
+            throw new NotImplementedException();
+        }
     }
 }

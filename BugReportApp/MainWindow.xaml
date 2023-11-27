@@ -142,17 +142,6 @@
                         <Label Content="Admin Tab" Grid.Row="1" />
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="tabSettings" Header="Settings">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="10"/>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <!-- Settings for the program -->
-                        <Label Content="Settings" Grid.Row="1" />
-                    </Grid>
-                </TabItem>
             </TabControl>
         </StackPanel> 
         <!-- End Main Tabs Section -->

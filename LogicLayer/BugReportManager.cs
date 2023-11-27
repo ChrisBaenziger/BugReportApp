@@ -211,11 +211,6 @@ namespace LogicLayer
             return bugTicketVMs;
         }
 
-        public bool UpdateBugReport(BugTicket oldBugTicket, BugTicket newBugTicket)
-        {
-            throw new NotImplementedException();
-        }
-
         private BugTicketVM CreateBugTicketVMFromBugTicket(BugTicket bugTicket)
         {
             BugTicketVM bugTicketVM = new BugTicketVM();
@@ -317,6 +312,21 @@ namespace LogicLayer
                 throw new ApplicationException("Error populating list.", ex);
             }
             return bugTicketsVM;
+        }
+
+        public bool UpdateBugReport(BugTicket oldBugTicket, BugTicket newBugTicket)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int AddBugReport(BugTicket bugTicket)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<KeyValuePair<string, string>> GetStatistics()
+        {
+            throw new NotImplementedException ();
         }
     }
 }

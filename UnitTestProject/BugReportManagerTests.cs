@@ -2,7 +2,7 @@
 using System;
 using DataAccessFakes;
 using LogicLayer;
-
+using System.Collections.Generic;
 
 namespace UnitTestProject
 {
@@ -139,6 +139,130 @@ namespace UnitTestProject
 
         }
 
+        [TestMethod]
+        public void TestUpdateBugReportUpdatesBugReport()
+        {
+            bool expectedResult = true;
+            bool actualResult = false;
 
+            actualResult = _bugReportManager.UpdateBugReport(
+                _bugReportManager.GetBugTicket(1),
+                _bugReportManager.GetBugTicket(2));
+
+            Assert.AreEqual(expectedResult, actualResult);  
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestUpdateBugReportReturnsError()
+        {
+            bool expectedResult = true;
+            bool actualResult = false;
+
+            actualResult = _bugReportManager.UpdateBugReport(
+                new DataObjects.BugTicket()
+                {
+                    BugTicketID = 1,
+                    BugDate = DateTime.Now,
+                    SubmitID = 1000,
+                    VersionNumber = "0.1.2",
+                    AreaName = "Core",
+                    Description = "Add bug report test",
+                    Status = "Testing",
+                    Feature = "Test add bug report",
+                    AssignedTo = 0,
+                    LastWorkedDate = DateTime.Now,
+                    LastWorkedEmployee = 0,
+                    Active = true
+                },
+                new DataObjects.BugTicket(){
+                BugTicketID = 1,
+                    BugDate = DateTime.Now,
+                    SubmitID = 1005,
+                    VersionNumber = "0.1.2",
+                    AreaName = "Core",
+                    Description = "Update bug report test",
+                    Status = "Testing",
+                    Feature = "Test update bug report",
+                    AssignedTo = 0,
+                    LastWorkedDate = DateTime.Now,
+                    LastWorkedEmployee = 0,
+                    Active = true
+                });
+
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void TestAddBugReportCreatesNewBugReport()
+        {
+            int expectedResult = 5;
+            int actualResult = 0;
+
+            actualResult = _bugReportManager.AddBugReport(
+                new DataObjects.BugTicket(){
+                    BugTicketID = 5,
+                    BugDate = DateTime.Now,
+                    SubmitID = 1000,
+                    VersionNumber = "0.1.2",
+                    AreaName = "Core",
+                    Description = "Add bug report test",
+                    Status = "Testing",
+                    Feature = "Test add bug report",
+                    AssignedTo = 0,
+                    LastWorkedDate = DateTime.Now,
+                    LastWorkedEmployee = 0,
+                    Active = true
+                });
+
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ApplicationException))]
+        public void TestAddBugReportReturnsError()
+        {
+            int expectedResult = 1;
+            int actualResult = 0;
+
+            actualResult = _bugReportManager.AddBugReport(
+                new DataObjects.BugTicket()
+                {
+                    BugTicketID = 1,
+                    BugDate = DateTime.Now,
+                    SubmitID = 1000,
+                    VersionNumber = "0.1.2",
+                    AreaName = "Core",
+                    Description = "Add bug report test",
+                    Status = "Testing",
+                    Feature = "Test add bug report",
+                    AssignedTo = 0,
+                    LastWorkedDate = DateTime.Now,
+                    LastWorkedEmployee = 0,
+                    Active = true
+                });
+
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void TestGetStatisticsReturnsCorrectData()
+        {
+            List<KeyValuePair<string, string>> expectedResult 
+                = new List<KeyValuePair<string, string>>();
+            List<KeyValuePair<string, string>> actualResult
+                = new List<KeyValuePair<string, string>>();
+
+            actualResult = _bugReportManager.GetStatistics();
+
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof(ApplicationException))]
+        public void TestGetStatisticsReturnsError()
+        {
+
+        }
     }
 }

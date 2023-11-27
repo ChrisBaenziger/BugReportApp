@@ -1,0 +1,11 @@
+
+Get statistics procedure for database
+
+update bug report manager/accessor
+
+add bug report manager/accessor
+
+statistics presentation layer for project lead
+
+modify employee info for manager
+

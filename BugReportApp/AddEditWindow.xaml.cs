@@ -24,6 +24,8 @@ namespace BugReportApp
         private BugTicketVM _bugTicketVM = null;
         private int _bugTicketID = 0;
         private BugReportManager _bugReportManager = null;
+        private int viewAddEditValue = 0;
+        // 0 view, 1 edit, 2 add
 
         public AddEditWindow(int bugTicketID)
         {
@@ -65,7 +67,65 @@ namespace BugReportApp
             try
             {
                 _bugTicketVM = _bugReportManager.GetBugTicket(_bugTicketID);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + ex.InnerException.Message);
+            }
 
+            switch (viewAddEditValue)
+            {
+                case 0: // view
+                    txtBugTicketID.IsEnabled = false;
+                    txtBugTicketDate.IsEnabled = false;
+                    txtBugTicketSubmitID.IsEnabled = false;
+                    cboBugTicketAssignedTo.IsEnabled = false;
+                    txtBugTicketLWDate.IsEnabled = false;
+                    txtBugTicketLWEmployee.IsEnabled = false;
+                    cboBugTicketVersionNumber.IsEnabled = false;
+                    cboBugTicketStatus.IsEnabled = false;
+                    cboBugTicketAreaName.IsEnabled = false;
+                    cboBugTicketFeature.IsEnabled = false;
+                    txtDescription.IsEnabled = false;
+
+                    btnSubmit.Content = "Edit";
+                    break;
+                case 1: // edit
+                    txtBugTicketID.IsEnabled = false;
+                    txtBugTicketDate.IsEnabled = true;
+                    txtBugTicketSubmitID.IsEnabled = true;
+                    cboBugTicketAssignedTo.IsEnabled = true;
+                    txtBugTicketLWDate.IsEnabled = false;
+                    txtBugTicketLWEmployee.IsEnabled = false;
+                    cboBugTicketVersionNumber.IsEnabled = true;
+                    cboBugTicketStatus.IsEnabled = true;
+                    cboBugTicketAreaName.IsEnabled = true;
+                    cboBugTicketFeature.IsEnabled = true;
+                    txtDescription.IsEnabled = true;
+
+                    btnSubmit.Content = "Submit";
+                    break;
+                case 2: // add
+                    txtBugTicketID.IsEnabled = false;
+                    txtBugTicketDate.IsEnabled = true;
+                    txtBugTicketSubmitID.IsEnabled = true;
+                    cboBugTicketAssignedTo.IsEnabled = true;
+                    txtBugTicketLWDate.IsEnabled = false;
+                    txtBugTicketLWEmployee.IsEnabled = false;
+                    cboBugTicketVersionNumber.IsEnabled = true;
+                    cboBugTicketStatus.IsEnabled = true;
+                    cboBugTicketAreaName.IsEnabled = true;
+                    cboBugTicketFeature.IsEnabled = true;
+                    txtDescription.IsEnabled = true;
+
+                    btnSubmit.Content = "Submit";
+                    break;
+                default:
+                    break;
+            }
+
+            try
+            {
                 txtBugTicketID.Text = _bugTicketVM.BugTicketID.ToString();
                 txtBugTicketDate.Text = _bugTicketVM.BugDate.ToString();
                 txtBugTicketSubmitID.Text = _bugTicketVM.SubmitID.ToString();
@@ -84,16 +144,18 @@ namespace BugReportApp
             {
                 MessageBox.Show(ex.Message + "\n" + ex.InnerException.Message);
             }
+
+
         }
 
         private void btnPrevious_Click(object sender, RoutedEventArgs e)
         {
             if (_bugReportManager != null)
             {
+                List<BugTicketVM> bugTickets = _bugReportManager.GetAllBugTickets();
                 _bugTicketID--;
-                if (_bugTicketID < 0)
+                if (_bugTicketID < bugTickets[0].BugTicketID)
                 {
-                    List<BugTicketVM> bugTickets = _bugReportManager.GetAllBugTickets();
                     _bugTicketID = bugTickets[bugTickets.Count - 1].BugTicketID;
                 }
                 UpdateBugReportDisplay();
@@ -104,28 +166,47 @@ namespace BugReportApp
         {
             if (_bugReportManager != null)
             {
+                List<BugTicketVM> bugTickets = _bugReportManager.GetAllBugTickets();
                 _bugTicketID++;
-                if (_bugTicketID > _bugReportManager.GetAllBugTickets().Count - 1)
+                if (_bugTicketID > bugTickets[bugTickets.Count - 1].BugTicketID)
                 {
-                    List<BugTicketVM> bugTickets = _bugReportManager.GetAllBugTickets();
                     _bugTicketID = bugTickets[0].BugTicketID;
                 }
+                UpdateBugReportDisplay();
             }
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show("Close window?",
-                "Are you sure you want to cancel?", MessageBoxButton.OKCancel, MessageBoxImage.Question);
-            if (result.Equals(1))
+                "Are you sure you want to cancel?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if ((int)result == 6)
             {
                 this.Close();
+            }
+            else
+            {
+                return;
             }
         }
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
+            switch (viewAddEditValue)
+            {
+                case 0: // switch to edit
+                    viewAddEditValue = 1;
+                    UpdateBugReportDisplay();
+                    break;
+                case 1: // submit edits
 
+                    break;
+                case 2: // submit new ticket
+
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
