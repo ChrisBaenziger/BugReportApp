@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\CustomProjects\BugReportApp\BugReportApp\obj\Debug\
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\BugReportApp\obj\Debug\
 BugReportApp
 none
 false
 DEBUG;TRACE
-C:\CustomProjects\BugReportApp\BugReportApp\App.xaml
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\BugReportApp\App.xaml
 31949295450
 
-71141415600
-152081659399
+8-940673018
+15736606847
 AddEditWindow.xaml;MainWindow.xaml;PasswordUpdateWindow.xaml;
 
-False
+True
 
