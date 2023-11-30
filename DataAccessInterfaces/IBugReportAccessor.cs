@@ -27,10 +27,10 @@ namespace DataAccessInterfaces
         List<string> SelectAllFeatures();
         
         // Modify Bug Tickets
-        bool UpdateBugReport(BugTicket oldBugTicket, BugTicket newBugTicket);
+        int UpdateBugReport(BugTicket oldBugTicket, BugTicket newBugTicket);
         int AddBugReport(BugTicket bugTicket);
 
-        List<KeyValuePair<string, string>> SelectStatistics();
+        List<ReportingItem> SelectStatistics();
 
     }
 }

@@ -73,7 +73,7 @@ namespace DataAccessLayer
                     bugTickets = new List<BugTicket>();
                     while (reader.Read())
                     {
-                        BugTicket bugTicket= new BugTicket();
+                        BugTicket bugTicket = new BugTicket();
 
                         bugTicket.BugTicketID = reader.GetInt32(0);
                         bugTicket.BugDate = reader.GetDateTime(1);
@@ -121,8 +121,8 @@ namespace DataAccessLayer
                             bugTicket.LastWorkedEmployee = reader.GetInt32(10);
                         }
 
-                       
-                        
+
+
                         bugTickets.Add(bugTicket);
                     }
                 }
@@ -798,17 +798,55 @@ namespace DataAccessLayer
             return bugTickets;
         }
 
-        public bool UpdateBugReport(BugTicket oldBugTicket, BugTicket newBugTicket)
+        public int UpdateBugReport(BugTicket oldBugTicket, BugTicket newBugTicket)
         {
             throw new NotImplementedException();
         }
 
         public int AddBugReport(BugTicket bugTicket)
         {
-            throw new NotImplementedException();
+            int rows = 0;
+
+            var conn = DBConnectionProvider.GetConnection();
+            var cmdText = "sp_create_bug_ticket";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@BugDate", SqlDbType.Date);
+            cmd.Parameters.Add("@SubmitID", SqlDbType.Int);
+            cmd.Parameters.Add("@VersionNumber", SqlDbType.NVarChar, 16);
+            cmd.Parameters.Add("@AreaName", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 4000);
+            cmd.Parameters.Add("@Status", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Feature", SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@AssignedTo", SqlDbType.Int);
+
+            cmd.Parameters["@BugDate"].Value = bugTicket.BugDate;
+            cmd.Parameters["@SubmitID"].Value = bugTicket.SubmitID;
+            cmd.Parameters["@VersionNumber"].Value = bugTicket.VersionNumber;
+            cmd.Parameters["@AreaName"].Value = bugTicket.AreaName;
+            cmd.Parameters["@Description"].Value = bugTicket.Description;
+            cmd.Parameters["@Status"].Value = bugTicket.Status;
+            cmd.Parameters["@Feature"].Value = bugTicket.Feature;
+            cmd.Parameters["@AssignedTo"].Value = bugTicket.AssignedTo;
+
+            try
+            {
+                conn.Open();
+                rows = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return rows;
         }
 
-        public List<KeyValuePair<string, string>> SelectStatistics() 
+        public List<ReportingItem> SelectStatistics()
         {
             throw new NotImplementedException();
         }

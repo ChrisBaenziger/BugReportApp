@@ -257,7 +257,12 @@ namespace BugReportApp
 
         private void tabProgrammer_GotFocus(object sender, RoutedEventArgs e)
         {
-            if(datProgrammerBugList.ItemsSource == null)
+            updateProgrammerTicketList();
+        }
+
+        private void updateProgrammerTicketList()
+        {
+            if (datProgrammerBugList.ItemsSource == null)
             {
                 var bugReportManager = new BugReportManager();
 
@@ -274,13 +279,24 @@ namespace BugReportApp
 
         private void datProgrammerBugList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if(this.datProgrammerBugList.SelectedIndex > 0) { 
             var bugTicket = datProgrammerBugList.SelectedItem as BugTicketVM;
 
-            var detailWindow = new AddEditWindow(bugTicket.BugTicketID);
+            var detailWindow = new AddEditWindow(bugTicket.BugTicketID, _loggedInEmployee);
             detailWindow.ShowDialog();
+            }
+            else
+            {
+
+            }
         }
 
         private void tabSrProgrammer_GotFocus(object sender, RoutedEventArgs e)
+        {
+            updateSrProgrammerTicketList();
+        }
+
+        private void updateSrProgrammerTicketList()
         {
             if (datSrProgrammerBugList.ItemsSource == null)
             {
@@ -299,7 +315,37 @@ namespace BugReportApp
 
         private void datSrProgrammerBugList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            // not implemented
+            if (this.datSrProgrammerBugList.SelectedIndex > 0)
+            {
+                var bugTicket = datSrProgrammerBugList.SelectedItem as BugTicketVM;
+
+                var detailWindow = new AddEditWindow(bugTicket.BugTicketID, _loggedInEmployee);
+                detailWindow.ShowDialog();
+            }
+            else
+            {
+
+            }
+        }
+
+        private void btnProgAddBugReport_Click(object sender, RoutedEventArgs e)
+        {
+            AddBugReport(_loggedInEmployee);
+        }
+
+        private void btnSrProgAddBugReport_Click(object sender, RoutedEventArgs e)
+        {
+            AddBugReport(_loggedInEmployee);
+        }
+
+        private void AddBugReport(EmployeeVM loggedInEmployee)
+        {
+            var detailWindow = new AddEditWindow(loggedInEmployee);
+            detailWindow.ShowDialog();
+
+            updateProgrammerTicketList();
+            updateSrProgrammerTicketList();
+
         }
     } // end main window class
 }

@@ -316,17 +316,43 @@ namespace LogicLayer
 
         public bool UpdateBugReport(BugTicket oldBugTicket, BugTicket newBugTicket)
         {
-            throw new NotImplementedException();
+            bool result = false;
+
+            try
+            {
+                result = (1 == _bugReportAccessor.UpdateBugReport(oldBugTicket, newBugTicket));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error updating ticket.", ex);
+            }
+
+            return result;
         }
 
-        public int AddBugReport(BugTicket bugTicket)
+        public bool AddBugReport(BugTicket bugTicket)
         {
-            throw new NotImplementedException();
+            bool result = false;
+            try
+            {
+                result = (1 == _bugReportAccessor.AddBugReport(bugTicket));
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Error adding bug ticket.Mgr", ex);
+            }
+            return result;
         }
 
-        public List<KeyValuePair<string, string>> GetStatistics()
+        public List<ReportingItem> GetStatistics()
         {
-            throw new NotImplementedException ();
+            List<ReportingItem> list = new List<ReportingItem>();
+            ReportingItem reportingItem = new ReportingItem();
+            reportingItem.Key = "Key";
+            reportingItem.Value = "Value";
+            list.Add(reportingItem);
+            
+            return list;
         }
     }
 }

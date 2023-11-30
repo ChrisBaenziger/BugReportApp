@@ -25,11 +25,21 @@ namespace BugReportApp
         private int _bugTicketID = 0;
         private BugReportManager _bugReportManager = null;
         private int viewAddEditValue = 0;
+        private EmployeeVM _loggedInEmployee = null;
         // 0 view, 1 edit, 2 add
 
-        public AddEditWindow(int bugTicketID)
+        public AddEditWindow(EmployeeVM loggedInEmployee)
+        {
+            viewAddEditValue = 2;
+            _loggedInEmployee = loggedInEmployee;
+            _bugTicketVM = new BugTicketVM();
+            InitializeComponent();
+        }
+
+        public AddEditWindow(int bugTicketID, EmployeeVM loggedInEmployee)
         {
             _bugTicketID = bugTicketID;
+            _loggedInEmployee = loggedInEmployee;
             InitializeComponent();
         }
 
@@ -45,7 +55,7 @@ namespace BugReportApp
                 foreach (var employee in employees)
                 {
                     employeeNames.Add(employee.EmployeeID + ": " +
-                        employee.GivenName + employee.FamilyName);
+                        employee.GivenName + " " + employee.FamilyName);
                 }
 
                 cboBugTicketVersionNumber.ItemsSource = _bugReportManager.GetAllVersions();
@@ -64,15 +74,6 @@ namespace BugReportApp
 
         private void UpdateBugReportDisplay()
         {
-            try
-            {
-                _bugTicketVM = _bugReportManager.GetBugTicket(_bugTicketID);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n" + ex.InnerException.Message);
-            }
-
             switch (viewAddEditValue)
             {
                 case 0: // view
@@ -87,6 +88,11 @@ namespace BugReportApp
                     cboBugTicketAreaName.IsEnabled = false;
                     cboBugTicketFeature.IsEnabled = false;
                     txtDescription.IsEnabled = false;
+
+                    btnNext.Visibility = Visibility.Visible;
+                    btnNext.IsEnabled = true;
+                    btnPrevious.Visibility = Visibility.Visible;
+                    btnPrevious.IsEnabled = true;
 
                     btnSubmit.Content = "Edit";
                     break;
@@ -103,12 +109,17 @@ namespace BugReportApp
                     cboBugTicketFeature.IsEnabled = true;
                     txtDescription.IsEnabled = true;
 
+                    btnNext.Visibility = Visibility.Hidden;
+                    btnNext.IsEnabled = false;
+                    btnPrevious.Visibility = Visibility.Hidden;
+                    btnPrevious.IsEnabled = false;
+
                     btnSubmit.Content = "Submit";
                     break;
                 case 2: // add
                     txtBugTicketID.IsEnabled = false;
-                    txtBugTicketDate.IsEnabled = true;
-                    txtBugTicketSubmitID.IsEnabled = true;
+                    txtBugTicketDate.IsEnabled = false;
+                    txtBugTicketSubmitID.IsEnabled = false;
                     cboBugTicketAssignedTo.IsEnabled = true;
                     txtBugTicketLWDate.IsEnabled = false;
                     txtBugTicketLWEmployee.IsEnabled = false;
@@ -118,33 +129,53 @@ namespace BugReportApp
                     cboBugTicketFeature.IsEnabled = true;
                     txtDescription.IsEnabled = true;
 
+                    btnNext.Visibility = Visibility.Hidden;
+                    btnNext.IsEnabled = false;
+                    btnPrevious.Visibility = Visibility.Hidden;
+                    btnPrevious.IsEnabled = false;
+
                     btnSubmit.Content = "Submit";
                     break;
                 default:
                     break;
             }
 
-            try
+            if (viewAddEditValue == 2)
             {
-                txtBugTicketID.Text = _bugTicketVM.BugTicketID.ToString();
-                txtBugTicketDate.Text = _bugTicketVM.BugDate.ToString();
-                txtBugTicketSubmitID.Text = _bugTicketVM.SubmitID.ToString();
-                txtBugTicketLWDate.Text = _bugTicketVM.LastWorkedDate.ToString();
-                txtBugTicketLWEmployee.Text = _bugTicketVM.LastWorkedEmployee.ToString()
-                    + ": " + _bugTicketVM.LastWorkedName;
-                txtDescription.Text = _bugTicketVM.Description;
-                cboBugTicketAreaName.Text = _bugTicketVM.AreaName;
-                cboBugTicketAssignedTo.Text = _bugTicketVM.AssignedTo.ToString()
-                    + ": " + _bugTicketVM.AssignedToName;
-                cboBugTicketFeature.Text = _bugTicketVM.Feature;
-                cboBugTicketStatus.Text = _bugTicketVM.Status;
-                cboBugTicketVersionNumber.Text = _bugTicketVM.VersionNumber;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\n" + ex.InnerException.Message);
-            }
 
+            }
+            else
+            {
+                try
+                {
+                    _bugTicketVM = _bugReportManager.GetBugTicket(_bugTicketID);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\n" + ex.InnerException.Message);
+                }
+
+                try
+                {
+                    txtBugTicketID.Text = _bugTicketVM.BugTicketID.ToString();
+                    txtBugTicketDate.Text = _bugTicketVM.BugDate.ToString();
+                    txtBugTicketSubmitID.Text = _bugTicketVM.SubmitID.ToString();
+                    txtBugTicketLWDate.Text = _bugTicketVM.LastWorkedDate.ToString();
+                    txtBugTicketLWEmployee.Text = _bugTicketVM.LastWorkedEmployee.ToString()
+                        + ": " + _bugTicketVM.LastWorkedName;
+                    txtDescription.Text = _bugTicketVM.Description;
+                    cboBugTicketAreaName.Text = _bugTicketVM.AreaName;
+                    cboBugTicketAssignedTo.Text = _bugTicketVM.AssignedTo.ToString()
+                        + ": " + _bugTicketVM.AssignedToName;
+                    cboBugTicketFeature.Text = _bugTicketVM.Feature;
+                    cboBugTicketStatus.Text = _bugTicketVM.Status;
+                    cboBugTicketVersionNumber.Text = _bugTicketVM.VersionNumber;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message + "\n" + ex.InnerException.Message);
+                }
+            }
 
         }
 
@@ -202,7 +233,35 @@ namespace BugReportApp
 
                     break;
                 case 2: // submit new ticket
-
+                    bool result = false;
+                    try
+                    {
+                        result = _bugReportManager.AddBugReport(
+                        new BugTicket()
+                        {
+                            BugDate = DateTime.Now,
+                            SubmitID = _loggedInEmployee.EmployeeID,
+                            LastWorkedDate = DateTime.Now,
+                            LastWorkedEmployee = _loggedInEmployee.EmployeeID,
+                            Description = txtDescription.Text,
+                            AreaName = cboBugTicketAreaName.Text,
+                            AssignedTo = int.Parse(cboBugTicketAssignedTo.Text.Remove(cboBugTicketAssignedTo.Text.IndexOf(':'))),
+                            Feature = cboBugTicketFeature.Text,
+                            Status = cboBugTicketStatus.Text,
+                            VersionNumber = cboBugTicketVersionNumber.Text
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("There was a problem adding the ticket.Pre\n" + ex.Message, "Add Ticket Error",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    if (result == true)
+                    {
+                        MessageBox.Show("Ticket was added to the database.", "Ticket Added",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.DialogResult = true;
+                    }
                     break;
                 default:
                     break;

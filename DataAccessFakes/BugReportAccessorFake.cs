@@ -3,6 +3,7 @@ using DataObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,9 +26,9 @@ namespace DataAccessFakes
                 Description = "Description 1",
                 Status = "Testing",
                 Feature = "Test fake 1",
-                AssignedTo = 0,
+                AssignedTo = 2,
                 LastWorkedDate = DateTime.Now,
-                LastWorkedEmployee = 0,
+                LastWorkedEmployee = 2,
                 Active = true
             });
 
@@ -57,9 +58,9 @@ namespace DataAccessFakes
                 Description = "Description 3",
                 Status = "Resolved",
                 Feature = "Test fake 3",
-                AssignedTo = 0,
+                AssignedTo = 2,
                 LastWorkedDate = DateTime.Now,
-                LastWorkedEmployee = 0,
+                LastWorkedEmployee = 2,
                 Active = false
             });
 
@@ -139,7 +140,7 @@ namespace DataAccessFakes
                     });
                 }
             }
-            if(results.Count == 0)
+            if (results.Count == 0)
             {
                 throw new ArgumentException("No bug tickets found.");
             }
@@ -209,7 +210,7 @@ namespace DataAccessFakes
                     results.Add(ticket);
                 }
             }
-            if(results.Count == 0)
+            if (results.Count == 0)
             {
                 throw new ArgumentException("No matching bug tickets found.");
             }
@@ -293,20 +294,49 @@ namespace DataAccessFakes
             return results;
         }
 
-        public bool UpdateBugReport(BugTicket oldBugTicket, BugTicket newBugTicket)
+        public int UpdateBugReport(BugTicket oldBugTicket, BugTicket newBugTicket)
         {
-            return true;
-            
+            int result = 0;
+
+            for(int i = 0; i < fakeBugTickets.Count; i++)
+            {
+                if (fakeBugTickets[i].BugTicketID == oldBugTicket.BugTicketID)
+                {
+                    fakeBugTickets[i] = newBugTicket;
+                    result++;
+                }
+            }
+        
+            if (result != 1)
+            {
+               throw new ApplicationException();
+            }
+
+            return result;
         }
 
         public int AddBugReport(BugTicket bugTicket)
         {
-            return 5;
+            foreach (var ticket in fakeBugTickets)
+            {
+                if(ticket.BugTicketID == bugTicket.BugTicketID)
+                {
+                    throw new ApplicationException();
+                }
+            }
+            fakeBugTickets.Add(bugTicket);
+            return 1;
         }
 
-        public List<KeyValuePair<string, string>> SelectStatistics()
+        public List<ReportingItem> SelectStatistics()
         {
-            return new List<KeyValuePair<string, string>>();
+            List<ReportingItem> list = new List<ReportingItem>();
+            ReportingItem reportingItem = new ReportingItem();
+            reportingItem.Key = "Key";
+            reportingItem.Value = "Value";
+            list.Add(reportingItem);
+
+            return list;
         }
     }
 }

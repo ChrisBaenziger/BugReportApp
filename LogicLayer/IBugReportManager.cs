@@ -28,8 +28,8 @@ namespace LogicLayer
         
         // Modify Bug Tickets
         bool UpdateBugReport (BugTicket oldBugTicket, BugTicket newBugTicket);
-        int AddBugReport(BugTicket bugTicket);
+        bool AddBugReport(BugTicket bugTicket);
 
-        List<KeyValuePair<string, string>> GetStatistics();
+        List<ReportingItem> GetStatistics();
     }
 }

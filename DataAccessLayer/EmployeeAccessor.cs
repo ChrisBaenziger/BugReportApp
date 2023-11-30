@@ -114,12 +114,12 @@ namespace DataAccessLayer
 
                     employeeVM = new EmployeeVM()
                     {
-                        EmployeeID = reader.GetInt32(0),
-                        GivenName = reader.GetString(1),
-                        FamilyName = reader.GetString(2),
-                        PhoneNumber = reader.GetString(3),
-                        Email = reader.GetString(4),
-                        Active = reader.GetBoolean(5)
+                        EmployeeID = employeeID,
+                        GivenName = reader.GetString(0),
+                        FamilyName = reader.GetString(1),
+                        PhoneNumber = reader.GetString(7),
+                        Email = reader.GetString(8),
+                        Active = true
                     };
                 }
                 else

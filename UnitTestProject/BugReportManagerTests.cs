@@ -3,6 +3,7 @@ using System;
 using DataAccessFakes;
 using LogicLayer;
 using System.Collections.Generic;
+using DataObjects;
 
 namespace UnitTestProject
 {
@@ -147,7 +148,21 @@ namespace UnitTestProject
 
             actualResult = _bugReportManager.UpdateBugReport(
                 _bugReportManager.GetBugTicket(1),
-                _bugReportManager.GetBugTicket(2));
+                new DataObjects.BugTicket()
+                {
+                    BugTicketID = 1,
+                    BugDate = DateTime.Now,
+                    SubmitID = 1005,
+                    VersionNumber = "0.1.2",
+                    AreaName = "Core",
+                    Description = "Update bug report test",
+                    Status = "Testing",
+                    Feature = "Test update bug report",
+                    AssignedTo = 2,
+                    LastWorkedDate = DateTime.Now,
+                    LastWorkedEmployee = 2,
+                    Active = true
+                });
 
             Assert.AreEqual(expectedResult, actualResult);  
         }
@@ -162,7 +177,7 @@ namespace UnitTestProject
             actualResult = _bugReportManager.UpdateBugReport(
                 new DataObjects.BugTicket()
                 {
-                    BugTicketID = 1,
+                    BugTicketID =6,
                     BugDate = DateTime.Now,
                     SubmitID = 1000,
                     VersionNumber = "0.1.2",
@@ -170,13 +185,13 @@ namespace UnitTestProject
                     Description = "Add bug report test",
                     Status = "Testing",
                     Feature = "Test add bug report",
-                    AssignedTo = 0,
+                    AssignedTo = 1,
                     LastWorkedDate = DateTime.Now,
-                    LastWorkedEmployee = 0,
+                    LastWorkedEmployee = 1,
                     Active = true
                 },
                 new DataObjects.BugTicket(){
-                BugTicketID = 1,
+                    BugTicketID =2,
                     BugDate = DateTime.Now,
                     SubmitID = 1005,
                     VersionNumber = "0.1.2",
@@ -184,9 +199,9 @@ namespace UnitTestProject
                     Description = "Update bug report test",
                     Status = "Testing",
                     Feature = "Test update bug report",
-                    AssignedTo = 0,
+                    AssignedTo = 1,
                     LastWorkedDate = DateTime.Now,
-                    LastWorkedEmployee = 0,
+                    LastWorkedEmployee = 1,
                     Active = true
                 });
 
@@ -196,8 +211,8 @@ namespace UnitTestProject
         [TestMethod]
         public void TestAddBugReportCreatesNewBugReport()
         {
-            int expectedResult = 5;
-            int actualResult = 0;
+            bool expectedResult = true;
+            bool actualResult = false;
 
             actualResult = _bugReportManager.AddBugReport(
                 new DataObjects.BugTicket(){
@@ -209,9 +224,9 @@ namespace UnitTestProject
                     Description = "Add bug report test",
                     Status = "Testing",
                     Feature = "Test add bug report",
-                    AssignedTo = 0,
+                    AssignedTo = 1,
                     LastWorkedDate = DateTime.Now,
-                    LastWorkedEmployee = 0,
+                    LastWorkedEmployee = 1,
                     Active = true
                 });
 
@@ -222,13 +237,13 @@ namespace UnitTestProject
         [ExpectedException(typeof(ApplicationException))]
         public void TestAddBugReportReturnsError()
         {
-            int expectedResult = 1;
-            int actualResult = 0;
+            bool expectedResult = true;
+            bool actualResult = false;
 
             actualResult = _bugReportManager.AddBugReport(
                 new DataObjects.BugTicket()
                 {
-                    BugTicketID = 1,
+                    BugTicketID = 4,
                     BugDate = DateTime.Now,
                     SubmitID = 1000,
                     VersionNumber = "0.1.2",
@@ -236,11 +251,12 @@ namespace UnitTestProject
                     Description = "Add bug report test",
                     Status = "Testing",
                     Feature = "Test add bug report",
-                    AssignedTo = 0,
+                    AssignedTo = 1,
                     LastWorkedDate = DateTime.Now,
-                    LastWorkedEmployee = 0,
+                    LastWorkedEmployee = 1,
                     Active = true
-                });
+                }
+                );
 
             Assert.AreEqual(expectedResult, actualResult);
         }
@@ -248,21 +264,13 @@ namespace UnitTestProject
         [TestMethod]
         public void TestGetStatisticsReturnsCorrectData()
         {
-            List<KeyValuePair<string, string>> expectedResult 
-                = new List<KeyValuePair<string, string>>();
-            List<KeyValuePair<string, string>> actualResult
-                = new List<KeyValuePair<string, string>>();
+            string expectedResult = "Value";
+            string actualResult = "";
 
-            actualResult = _bugReportManager.GetStatistics();
+            actualResult = _bugReportManager.GetStatistics()[0].Value;
 
             Assert.AreEqual(expectedResult, actualResult);
         }
 
-        [TestMethod]
-        [ExpectedException (typeof(ApplicationException))]
-        public void TestGetStatisticsReturnsError()
-        {
-
-        }
     }
 }
