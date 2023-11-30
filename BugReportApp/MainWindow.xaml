@@ -142,6 +142,11 @@
                         <Label Content="Admin Tab" Grid.Row="1" />
                     </Grid>
                 </TabItem>
+                <TabItem x:Name="tabSettings" Header="Settings">
+                    <Grid>
+                        
+                    </Grid>
+                </TabItem>
             </TabControl>
         </StackPanel> 
         <!-- End Main Tabs Section -->

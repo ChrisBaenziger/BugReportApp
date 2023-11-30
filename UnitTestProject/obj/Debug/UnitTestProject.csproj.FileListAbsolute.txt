@@ -44,3 +44,7 @@ C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\Microsoft.VisualStudio.
 C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
 C:\CustomProjects\BugReportApp\UnitTestProject\bin\Debug\DataAccessLayer.pdb
 C:\CustomProjects\BugReportApp\UnitTestProject\obj\Debug\UnitTestProject.csproj.CopyComplete
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\UnitTestProject\bin\Debug\DataAccessInterfaces.dll
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\UnitTestProject\bin\Debug\DataAccessLayer.dll
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\UnitTestProject\bin\Debug\DataAccessInterfaces.pdb
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\UnitTestProject\bin\Debug\DataAccessLayer.pdb

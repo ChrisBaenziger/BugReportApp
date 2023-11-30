@@ -52,3 +52,7 @@ C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\DataAccessInterfaces.dll
 C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\DataAccessLayer.dll
 C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\DataAccessInterfaces.pdb
 C:\CustomProjects\BugReportApp\BugReportApp\bin\Debug\DataAccessLayer.pdb
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\BugReportApp\bin\Debug\DataAccessInterfaces.dll
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\BugReportApp\bin\Debug\DataAccessLayer.dll
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\BugReportApp\bin\Debug\DataAccessInterfaces.pdb
+C:\Users\chris\Documents\Kirkwood\Fall 2023\DotNet\BugReportApp\BugReportApp\bin\Debug\DataAccessLayer.pdb
