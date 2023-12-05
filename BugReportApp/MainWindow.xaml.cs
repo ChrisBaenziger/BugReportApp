@@ -257,6 +257,7 @@ namespace BugReportApp
 
         private void tabProgrammer_GotFocus(object sender, RoutedEventArgs e)
         {
+            datProgrammerBugList.ItemsSource = null;
             updateProgrammerTicketList();
         }
 
@@ -293,6 +294,7 @@ namespace BugReportApp
 
         private void tabSrProgrammer_GotFocus(object sender, RoutedEventArgs e)
         {
+            datSrProgrammerBugList.ItemsSource = null;
             updateSrProgrammerTicketList();
         }
 
@@ -301,7 +303,6 @@ namespace BugReportApp
             if (datSrProgrammerBugList.ItemsSource == null)
             {
                 var bugReportManager = new BugReportManager();
-
                 try
                 {
                     datSrProgrammerBugList.ItemsSource = bugReportManager.GetAllBugTickets();
