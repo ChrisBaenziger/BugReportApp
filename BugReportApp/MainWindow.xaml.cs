@@ -58,13 +58,13 @@ namespace BugReportApp
                         tabSettings.Visibility = Visibility.Visible;
                         break;
                     case "Programmer":
-                        tabProgrammer.Visibility= Visibility.Visible;
+                        tabProgrammer.Visibility = Visibility.Visible;
                         break;
                     case "SeniorProgrammer":
                         tabSrProgrammer.Visibility = Visibility.Visible;
                         break;
                     case "ProjectLead":
-                        tabProjectLead.Visibility= Visibility.Visible;
+                        tabProjectLead.Visibility = Visibility.Visible;
                         tabSettings.Visibility = Visibility.Visible;
                         break;
                     default:
@@ -76,14 +76,14 @@ namespace BugReportApp
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            if(btnLogin.Content.ToString() == "Log In")
+            if (btnLogin.Content.ToString() == "Log In")
             {
                 string email = txtEmailAddress.Text;
                 string password = pwdPassword.Password;
 
                 if (email.IsValidEmail())
                 {
-                    MessageBox.Show("Invalid Email", "Input Error", 
+                    MessageBox.Show("Invalid Email", "Input Error",
                         MessageBoxButton.OK, MessageBoxImage.Error);
                     txtEmailAddress.SelectAll();
                     txtEmailAddress.Focus();
@@ -102,13 +102,13 @@ namespace BugReportApp
                 try
                 {
                     _loggedInEmployee = _employeeManager.LoginEmployee(email, password);
-                    if(pwdPassword.Password.ToString() == "newuser")
+                    if (pwdPassword.Password.ToString() == "newuser")
                     {
                         PasswordUpdateWindow passwordUpdate = new PasswordUpdateWindow(_loggedInEmployee.Email);
-                        
+
                         var result = passwordUpdate.ShowDialog();
 
-                        if(result == true)
+                        if (result == true)
                         {
                             MessageBox.Show("Password Updated.", "Success",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
@@ -172,7 +172,7 @@ namespace BugReportApp
             for (int i = 0; i < _loggedInEmployee.Roles.Count; i++)
             {
                 rolesList += " " + _loggedInEmployee.Roles[i];
-                if(i == _loggedInEmployee.Roles.Count - 2)
+                if (i == _loggedInEmployee.Roles.Count - 2)
                 {
                     if (_loggedInEmployee.Roles.Count > 2)
                     {
@@ -209,9 +209,9 @@ namespace BugReportApp
 
         private void mnuChangePassword_Click(object sender, RoutedEventArgs e)
         {
-            if(_loggedInEmployee == null)
+            if (_loggedInEmployee == null)
             {
-                MessageBox.Show("You must be logged in to update your password", 
+                MessageBox.Show("You must be logged in to update your password",
                     "Login Required", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
@@ -219,7 +219,7 @@ namespace BugReportApp
             {
                 try
                 {
-                    PasswordUpdateWindow passwordUpdate = 
+                    PasswordUpdateWindow passwordUpdate =
                         new PasswordUpdateWindow(_loggedInEmployee.Email);
 
                     var result = passwordUpdate.ShowDialog();
@@ -257,7 +257,6 @@ namespace BugReportApp
 
         private void tabProgrammer_GotFocus(object sender, RoutedEventArgs e)
         {
-            datProgrammerBugList.ItemsSource = null;
             updateProgrammerTicketList();
         }
 
@@ -280,21 +279,20 @@ namespace BugReportApp
 
         private void datProgrammerBugList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(this.datProgrammerBugList.SelectedIndex > 0) { 
             var bugTicket = datProgrammerBugList.SelectedItem as BugTicketVM;
-
-            var detailWindow = new AddEditWindow(bugTicket.BugTicketID, _loggedInEmployee);
-            detailWindow.ShowDialog();
-            }
-            else
+            if (bugTicket != null)
             {
-
+                var detailWindow = new AddEditWindow(bugTicket.BugTicketID, _loggedInEmployee);
+                detailWindow.ShowDialog();
             }
+            //else
+            //{
+            //    MessageBox.Show("Please select a bug report from the list.", "No report selected.", MessageBoxButton.OK);
+            //}
         }
 
         private void tabSrProgrammer_GotFocus(object sender, RoutedEventArgs e)
         {
-            datSrProgrammerBugList.ItemsSource = null;
             updateSrProgrammerTicketList();
         }
 
@@ -316,7 +314,7 @@ namespace BugReportApp
 
         private void datSrProgrammerBugList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (this.datSrProgrammerBugList.SelectedIndex > 0)
+            if (datSrProgrammerBugList.SelectedIndex > 0 /* .SelectedItem != null*/)
             {
                 var bugTicket = datSrProgrammerBugList.SelectedItem as BugTicketVM;
 
@@ -344,9 +342,11 @@ namespace BugReportApp
             var detailWindow = new AddEditWindow(loggedInEmployee);
             detailWindow.ShowDialog();
 
+            datProgrammerBugList.ItemsSource = null;
+            datSrProgrammerBugList.ItemsSource = null;
+
             updateProgrammerTicketList();
             updateSrProgrammerTicketList();
-
         }
     } // end main window class
 }
