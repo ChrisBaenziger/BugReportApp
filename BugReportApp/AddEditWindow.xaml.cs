@@ -237,7 +237,7 @@ namespace BugReportApp
                     {
                         result = _bugReportManager.UpdateBugReport(_bugTicketVM, new BugTicket()
                         {
-                            BugTicketID = _bugTicketID,
+                            BugTicketID = _bugTicketVM.BugTicketID,
                             BugDate = _bugTicketVM.BugDate,
                             SubmitID = _loggedInEmployee.EmployeeID,
                             LastWorkedDate = DateTime.Now,

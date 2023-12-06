@@ -112,7 +112,7 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Row="1" Content="Project Lead Tab" />
+                        <Label Grid.Row="1" Content="Senior Programmer" />
                         <Button Grid.Row="1" Grid.Column="1" x:Name="btnSrProgAddBugReport" Margin="5px" Width="150px"
                                 FontWeight="Bold" Background="Blue" Foreground="AliceBlue" 
                                 HorizontalAlignment="Left" Content="Add Bug Report" Click="btnSrProgAddBugReport_Click" />
@@ -128,7 +128,7 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <!-- Review info about the status of bug reports -->
-                        <Label Content="Project Lead Tab" Grid.Row="1" />
+                        <Label Content="Project Lead" Grid.Row="1" />
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tabManager" Header="Manager">
@@ -139,7 +139,7 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <!-- Review info about the status of bug reports -->
-                        <Label Content="Manager Tab" Grid.Row="1" />
+                        <Label Content="Manager" Grid.Row="1" />
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tabAdmin" Header="Administration">
@@ -150,12 +150,18 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <!-- User and password management -->
-                        <Label Content="Admin Tab" Grid.Row="1" />
+                        <Label Content="Admin" Grid.Row="1" />
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="tabSettings" Header="Settings">
                     <Grid>
-                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <!-- Manage data for dropdowns and other tables -->
+                        <Label Content="Settings" Grid.Row="1" />
                     </Grid>
                 </TabItem>
             </TabControl>

@@ -283,12 +283,17 @@ namespace BugReportApp
             if (bugTicket != null)
             {
                 var detailWindow = new AddEditWindow(bugTicket.BugTicketID, _loggedInEmployee);
-                detailWindow.ShowDialog();
+                var result = detailWindow.ShowDialog();
+
+                if (result == true)
+                {
+                    datProgrammerBugList.ItemsSource = null;
+                    datSrProgrammerBugList.ItemsSource = null;
+
+                    updateProgrammerTicketList();
+                    updateSrProgrammerTicketList();
+                }
             }
-            //else
-            //{
-            //    MessageBox.Show("Please select a bug report from the list.", "No report selected.", MessageBoxButton.OK);
-            //}
         }
 
         private void tabSrProgrammer_GotFocus(object sender, RoutedEventArgs e)
@@ -340,13 +345,17 @@ namespace BugReportApp
         private void AddBugReport(EmployeeVM loggedInEmployee)
         {
             var detailWindow = new AddEditWindow(loggedInEmployee);
-            detailWindow.ShowDialog();
+            var result = detailWindow.ShowDialog();
 
-            datProgrammerBugList.ItemsSource = null;
-            datSrProgrammerBugList.ItemsSource = null;
-
-            updateProgrammerTicketList();
-            updateSrProgrammerTicketList();
+            if(result == true) { 
+                datProgrammerBugList.ItemsSource = null;
+                datSrProgrammerBugList.ItemsSource = null;
+            
+                updateProgrammerTicketList();
+                updateSrProgrammerTicketList();
+            }
         }
+
+
     } // end main window class
 }

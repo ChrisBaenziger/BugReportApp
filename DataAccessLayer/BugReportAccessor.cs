@@ -847,46 +847,47 @@ namespace DataAccessLayer
             cmd.Parameters["@OldAreaName"].Value = oldBugTicket.AreaName;
             cmd.Parameters["@OldDescription"].Value = oldBugTicket.Description;
             cmd.Parameters["@OldStatus"].Value = oldBugTicket.Status;
-            if (oldBugTicket.Feature == "")
-            {
-                cmd.Parameters.AddWithValue("@OldFeature", DBNull.Value);
-                // cmd.Parameters["@OldFeature"].Value = DBNull.Value;
-            }
-            else
-            {
-                cmd.Parameters.Add("@OldFeature", SqlDbType.NVarChar, 100);
-                cmd.Parameters["@OldFeature"].Value = oldBugTicket.Feature;
-            }
-            if (oldBugTicket.AssignedTo == 1)
-            {
-                cmd.Parameters.AddWithValue("@OldAssignedTo", DBNull.Value);
-                // cmd.Parameters["@OldAssignedTo"].Value = DBNull.Value;
-            }
-            else
-            {
-                cmd.Parameters.Add("@OldAssignedTo", SqlDbType.Int);
-                cmd.Parameters["@OldAssignedTo"].Value = oldBugTicket.AssignedTo;
-            }
-            if (oldBugTicket.LastWorkedDate == new DateTime())
-            {
-                cmd.Parameters.AddWithValue("@OldLastWorkedDate", DBNull.Value);
-                // cmd.Parameters["@OldLastWorkedDate"].Value = DBNull.Value;
-            }
-            else
-            {
-                cmd.Parameters.Add("@OldLastWorkedDate", SqlDbType.Date);
-                cmd.Parameters["@OldLastWorkedDate"].Value = newBugTicket.BugDate.Date;
-            }
-            if (oldBugTicket.LastWorkedEmployee == 1)
-            {
-                cmd.Parameters.AddWithValue("@OldLastWorkedEmployee", DBNull.Value);
-                // cmd.Parameters["@OldlastWorkedEmployee"].SourceColumnNullMapping = DBNull.Value;
-            }
-            else
-            {
-                cmd.Parameters.Add("@OldLastWorkedEmployee", SqlDbType.Int);
-                cmd.Parameters["@OldlastWorkedEmployee"].Value = oldBugTicket.LastWorkedEmployee;
-            }
+            //if (oldBugTicket.Feature == "")
+            //{
+            //    cmd.Parameters.AddWithValue("@OldFeature", DBNull.Value);
+                //// cmd.Parameters.Add("@OldFeature", SqlDbType.Int);
+                //// cmd.Parameters["@OldFeature"].Value = DBNull.Value;
+            //}
+            //else
+            //{
+            //    cmd.Parameters.Add("@OldFeature", SqlDbType.NVarChar, 100);
+            //    cmd.Parameters["@OldFeature"].Value = oldBugTicket.Feature;
+            //}
+            //if (oldBugTicket.AssignedTo == 1)
+            //{
+            //    cmd.Parameters.AddWithValue("@OldAssignedTo", DBNull.Value);
+                //// cmd.Parameters["@OldAssignedTo"].Value = DBNull.Value;
+            //}
+            //else
+            //{
+            //    cmd.Parameters.Add("@OldAssignedTo", SqlDbType.Int);
+            //    cmd.Parameters["@OldAssignedTo"].Value = oldBugTicket.AssignedTo;
+            //}
+            //if (oldBugTicket.LastWorkedDate == new DateTime())
+            //{
+            //    cmd.Parameters.AddWithValue("@OldLastWorkedDate", DBNull.Value);
+            //    // cmd.Parameters["@OldLastWorkedDate"].Value = DBNull.Value;
+            //}
+            //else
+            //{
+            //    cmd.Parameters.Add("@OldLastWorkedDate", SqlDbType.Date);
+            //    cmd.Parameters["@OldLastWorkedDate"].Value = newBugTicket.BugDate.Date;
+            //}
+            //if (oldBugTicket.LastWorkedEmployee == 1)
+            //{
+            //    cmd.Parameters.AddWithValue("@OldLastWorkedEmployee", DBNull.Value);
+            //    // cmd.Parameters["@OldlastWorkedEmployee"].SourceColumnNullMapping = DBNull.Value;
+            //}
+            //else
+            //{
+            //    cmd.Parameters.Add("@OldLastWorkedEmployee", SqlDbType.Int);
+            //    cmd.Parameters["@OldlastWorkedEmployee"].Value = oldBugTicket.LastWorkedEmployee;
+            //}
             cmd.Parameters["@OldActive"].Value = oldBugTicket.Active;
 
             try
