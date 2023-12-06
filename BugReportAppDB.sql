@@ -202,7 +202,7 @@ GO
 INSERT INTO [dbo].[Employee]
     ([GivenName], [FamilyName], [Address1], [Address2], [City], [State], [Zip], [PhoneNumber], [Email])
 VALUES
-    ('Chris', 'Baenziger', '229 Nielsen Hall', null, 'Cedar Rapids', 'IA', '52405', '3193101111', 'christopher-baenziger@student.kirkwood.edu'),
+    ('Chris', 'Baenziger', '229 Nielsen Hall', null, 'Cedar Rapids', 'IA', '52405', '3193101111', 'chrisbaenziger@gmail.com'),
     ('Jim', 'Glasgow', '229 Nielsen Hall', null, 'Cedar Rapids', 'IA', '52405', '3103102222', 'Jim.Glasgow@kirkwood.edu');
 GO
 
@@ -522,7 +522,7 @@ BEGIN
 		SET			[PasswordHash] = @NewPasswordHash
 		WHERE		@Email = [Email]
         AND @OldPasswordHash = [PasswordHash]
-    RETURN 		@@ROWCOUNT
+   -- RETURN 		@@ROWCOUNT
 END
 GO
 
@@ -541,7 +541,7 @@ BEGIN
 		SET			[PasswordHash] = @NewPasswordHash
 		WHERE		@Email = [Email]
         AND @OldPasswordHash = [PasswordHash]
-    RETURN 		@@ROWCOUNT
+   -- RETURN 		@@ROWCOUNT
 END
 GO
 
@@ -683,7 +683,7 @@ BEGIN
         AND @OldLastWorkedDate     = [LastWorkedDate]
         AND @OldLastWorkedEmployee = [LastWorkedEmployee]
         AND @OldActive             = [Active]
-    RETURN  @@ROWCOUNT
+	
 END
 GO
 
@@ -976,7 +976,7 @@ BEGIN
     UPDATE  [BugTicket]
         SET     [Active] = 0
         WHERE   @BugTicketID = [BugTicketID]
-    RETURN  @@ROWCOUNT
+    
 END
 GO
 
@@ -1012,7 +1012,7 @@ BEGIN
         AND [LastWorkedDate] = @LastWorkedDate
         AND [LastWorkedEmployee] = @LastWorkedEmployee
         AND [Active] = @Active
-    RETURN  @@ROWCOUNT
+    
 END
 GO
 
@@ -1041,7 +1041,7 @@ BEGIN
     VALUES
         (@GivenName, @FamilyName, @Address1, @Address2, @City,
             @State, @Zip, @PhoneNumber, @Email)
-    RETURN @@IDENTITY
+    
 END
 GO
 
@@ -1095,7 +1095,7 @@ BEGIN
         AND @Zip = [Zip]
         AND @PhoneNumber = [PhoneNumber]
         AND @Email = [Email]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1128,7 +1128,7 @@ BEGIN
     UPDATE [Employee]
         SET    [Active] = 0
         WHERE  @EmployeeID = [EmployeeID]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1161,7 +1161,7 @@ BEGIN
         AND @Zip = [Zip]
         AND @PhoneNumber = [PhoneNumber]
         AND @Email = [Email]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1180,7 +1180,7 @@ BEGIN
         ([RoleID])
     VALUES
         (@RoleID)
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1201,7 +1201,7 @@ BEGIN
             [Active] = @NewActive
         WHERE @OldRoleID = [RoleID]
         AND @OldActive = [Active]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1232,7 +1232,7 @@ BEGIN
     UPDATE [Role]
         SET [Active] = 0
         WHERE @RoleID = [RoleID]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1249,7 +1249,7 @@ BEGIN
     DELETE FROM [Role]
         WHERE [RoleID] = @RoleID
         AND [Active] = @Active
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1269,7 +1269,7 @@ BEGIN
         ([EmployeeID], [RoleID])
     VALUES
         (@EmployeeID, @RoleID)
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1290,7 +1290,7 @@ BEGIN
             [RoleID] = @NewRoleID
         WHERE @OldEmployeeID = [EmployeeID]
         AND @OldRoleID = [RoleID]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1321,7 +1321,7 @@ BEGIN
     UPDATE [EmployeeRole]
         SET [Active] = 0
         WHERE @EmployeeID = [EmployeeID]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1340,7 +1340,7 @@ BEGIN
         WHERE [EmployeeID] = @EmployeeID
         AND [RoleID] = @RoleID
         AND [Active] = @Active
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1368,7 +1368,7 @@ BEGIN
         ([GivenName], [FamilyName], [Address1], [Address2], [City], [State], [Zip], [PhoneNumber], [Email], [VersionNumber])
     VALUES
         (@GivenName, @FamilyName, @Address1, @Address2, @City, @State, @Zip, @PhoneNumber, @Email, @VersionNumber)
-    RETURN @@IDENTITY
+    
 END
 GO
 
@@ -1428,7 +1428,7 @@ BEGIN
         AND @OldEmail = [Email]
         AND @OldVersionNumber = [VersionNumber]
         AND @OldActive = [Active]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1508,7 +1508,7 @@ BEGIN
     UPDATE [Customer]
         SET [Active] = 0
         WHERE @CustomerID = [CustomerID]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1543,7 +1543,7 @@ BEGIN
         AND @PhoneNumber = [PhoneNumber]
         AND @Email = [Email]
         AND @VersionNumber = [VersionNumber]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1572,7 +1572,7 @@ BEGIN
     VALUES
         (@CustomerID, @Manufacturer, @ModelNumber, @OperatingSystem, @CPU, @GraphicsCard,
             @RamType, @RamGB, @IPAddress)
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1669,7 +1669,7 @@ BEGIN
     UPDATE [ComputerInformation]
         SET [Active] = 0
         WHERE @CustomerID = [CustomerID]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1702,7 +1702,7 @@ BEGIN
         AND @RamGB = [RamGB]
         AND @IPAddress = [IPAddress]
         AND @Active = [Active]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1721,7 +1721,7 @@ BEGIN
         ([Status])
     VALUES
         (@Status)
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1743,7 +1743,7 @@ BEGIN
                 [Active] = @NewActive
             WHERE @OldStatus = [Status]
         AND @OldActive = [Active]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1771,7 +1771,7 @@ BEGIN
     UPDATE [BugStatus]
         SET [Active] = 0
         WHERE @Status = [Status]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1788,7 +1788,7 @@ BEGIN
     DELETE FROM [BugStatus]
         WHERE @Status = [Status]
         AND @Active = [Active]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1811,7 +1811,7 @@ BEGIN
         ([VersionNumber], [VersionStartDate], [VersionEndDate])
     VALUES
         (@VersionNumber, @VersionStartDate, @VersionEndDate)
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1841,7 +1841,7 @@ BEGIN
         AND @OldVersionStartDate = [VersionStartDate]
         AND @OldVersionEndDate = [VersionEndDate]
         AND @OldActive = [Active]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1895,7 +1895,7 @@ BEGIN
     UPDATE [ProductVersion]
         SET [Active] = 0
         WHERE @VersionNumber = [VersionNumber]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1916,7 +1916,7 @@ BEGIN
         AND @VersionStartDate = [VersionStartDate]
         AND @VersionEndDate = [VersionEndDate]
         AND @Active = [Active]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1936,7 +1936,7 @@ BEGIN
         ([AreaName], [FirstVersionNumber])
     VALUES
         (@AreaName, @FirstVersionNumber)
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -1962,7 +1962,7 @@ BEGIN
         WHERE @OldAreaName = [AreaName]
         AND @OldFirstVersionNumber = [FirstVersionNumber]
         AND @OldActive = [Active]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -2031,7 +2031,7 @@ BEGIN
     UPDATE [ProductArea]
         SET [Active] = 0
         WHERE @AreaName = [AreaName]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -2050,7 +2050,7 @@ BEGIN
         WHERE @AreaName = [AreaName]
         AND @FirstVersionNumber = [FirstVersionNumber]
         AND @Active = [Active]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -2075,7 +2075,7 @@ BEGIN
     VALUES
         (@FeatureName, @FirstVersionNumber, @FeatureArea,
             @FeatureDescription, @LastVersionNumber)
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -2113,7 +2113,7 @@ BEGIN
         AND @OldFeatureDescription = [FeatureDescription]
         AND @OldLastVersionNumber = [LastVersionNumber]
         AND @OldActive = [Active]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -2244,7 +2244,7 @@ BEGIN
     UPDATE [Feature]
         SET [Active] = 0
         WHERE @FeatureName = [FeatureName]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -2269,7 +2269,7 @@ BEGIN
         AND @FeatureDescription = [FeatureDescription]
         AND @LastVersionNumber = [LastVersionNumber]
         AND @Active = [Active]
-    RETURN @@ROWCOUNT
+    
 END
 GO
 
@@ -2353,7 +2353,7 @@ BEGIN
         AND @OldAssignedTo         = [AssignedTo]
         AND @OldLastWorkedDate     = [LastWorkedDate]
         AND @OldLastWorkedEmployee = [LastWorkedEmployee]
-    RETURN  @@ROWCOUNT
+    
 END
 GO
 
@@ -2406,6 +2406,6 @@ BEGIN
         AND [AssignedTo] = @AssignedTo
         AND [LastWorkedDate] = @LastWorkedDate
         AND [LastWorkedEmployee] = @LastWorkedEmployee
-    RETURN @@ROWCOUNT
+    
 END
 GO

@@ -800,7 +800,109 @@ namespace DataAccessLayer
 
         public int UpdateBugReport(BugTicket oldBugTicket, BugTicket newBugTicket)
         {
-            throw new NotImplementedException();
+            int rows = 0;
+
+            var conn = DBConnectionProvider.GetConnection();
+            var cmdText = "sp_update_bug_ticket";
+            var cmd = new SqlCommand(cmdText, conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@BugTicketID", SqlDbType.Int);
+            cmd.Parameters.Add("@BugDate", SqlDbType.Date);
+            cmd.Parameters.Add("@SubmitID", SqlDbType.Int);
+            cmd.Parameters.Add("@VersionNumber", SqlDbType.NVarChar, 16);
+            cmd.Parameters.Add("@AreaName", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 4000);
+            cmd.Parameters.Add("@Status", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@Feature", SqlDbType.NVarChar, 100);
+            cmd.Parameters.Add("@AssignedTo", SqlDbType.Int);
+            cmd.Parameters.Add("@LastWorkedDate", SqlDbType.Date);
+            cmd.Parameters.Add("@LastWorkedEmployee", SqlDbType.Int);
+            cmd.Parameters.Add("@Active", SqlDbType.Bit);
+
+            cmd.Parameters.Add("@OldBugDate", SqlDbType.Date);
+            cmd.Parameters.Add("@OldSubmitID", SqlDbType.Int);
+            cmd.Parameters.Add("@OldVersionNumber", SqlDbType.NVarChar, 16);
+            cmd.Parameters.Add("@OldAreaName", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@OldDescription", SqlDbType.NVarChar, 4000);
+            cmd.Parameters.Add("@OldStatus", SqlDbType.NVarChar, 50);
+            cmd.Parameters.Add("@OldActive", SqlDbType.Bit);
+
+            cmd.Parameters["@BugTicketID"].Value = newBugTicket.BugTicketID;
+            cmd.Parameters["@BugDate"].Value = newBugTicket.BugDate.Date;
+            cmd.Parameters["@SubmitID"].Value = newBugTicket.SubmitID;
+            cmd.Parameters["@VersionNumber"].Value = newBugTicket.VersionNumber;
+            cmd.Parameters["@AreaName"].Value = newBugTicket.AreaName;
+            cmd.Parameters["@Description"].Value = newBugTicket.Description;
+            cmd.Parameters["@Status"].Value = newBugTicket.Status;
+            cmd.Parameters["@Feature"].Value = newBugTicket.Feature;
+            cmd.Parameters["@AssignedTo"].Value = newBugTicket.AssignedTo;
+            cmd.Parameters["@LastWorkedDate"].Value = newBugTicket.LastWorkedDate.Date;
+            cmd.Parameters["@lastWorkedEmployee"].Value = newBugTicket.LastWorkedEmployee;
+            cmd.Parameters["@Active"].Value = newBugTicket.Active;
+
+            cmd.Parameters["@OldBugDate"].Value = oldBugTicket.BugDate.Date;
+            cmd.Parameters["@OldSubmitID"].Value = oldBugTicket.SubmitID;
+            cmd.Parameters["@OldVersionNumber"].Value = oldBugTicket.VersionNumber;
+            cmd.Parameters["@OldAreaName"].Value = oldBugTicket.AreaName;
+            cmd.Parameters["@OldDescription"].Value = oldBugTicket.Description;
+            cmd.Parameters["@OldStatus"].Value = oldBugTicket.Status;
+            if (oldBugTicket.Feature == "")
+            {
+                cmd.Parameters.AddWithValue("@OldFeature", DBNull.Value);
+                // cmd.Parameters["@OldFeature"].Value = DBNull.Value;
+            }
+            else
+            {
+                cmd.Parameters.Add("@OldFeature", SqlDbType.NVarChar, 100);
+                cmd.Parameters["@OldFeature"].Value = oldBugTicket.Feature;
+            }
+            if (oldBugTicket.AssignedTo == 1)
+            {
+                cmd.Parameters.AddWithValue("@OldAssignedTo", DBNull.Value);
+                // cmd.Parameters["@OldAssignedTo"].Value = DBNull.Value;
+            }
+            else
+            {
+                cmd.Parameters.Add("@OldAssignedTo", SqlDbType.Int);
+                cmd.Parameters["@OldAssignedTo"].Value = oldBugTicket.AssignedTo;
+            }
+            if (oldBugTicket.LastWorkedDate == new DateTime())
+            {
+                cmd.Parameters.AddWithValue("@OldLastWorkedDate", DBNull.Value);
+                // cmd.Parameters["@OldLastWorkedDate"].Value = DBNull.Value;
+            }
+            else
+            {
+                cmd.Parameters.Add("@OldLastWorkedDate", SqlDbType.Date);
+                cmd.Parameters["@OldLastWorkedDate"].Value = newBugTicket.BugDate.Date;
+            }
+            if (oldBugTicket.LastWorkedEmployee == 1)
+            {
+                cmd.Parameters.AddWithValue("@OldLastWorkedEmployee", DBNull.Value);
+                // cmd.Parameters["@OldlastWorkedEmployee"].SourceColumnNullMapping = DBNull.Value;
+            }
+            else
+            {
+                cmd.Parameters.Add("@OldLastWorkedEmployee", SqlDbType.Int);
+                cmd.Parameters["@OldlastWorkedEmployee"].Value = oldBugTicket.LastWorkedEmployee;
+            }
+            cmd.Parameters["@OldActive"].Value = oldBugTicket.Active;
+
+            try
+            {
+                conn.Open();
+                rows = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return rows;
         }
 
         public int AddBugReport(BugTicket bugTicket)

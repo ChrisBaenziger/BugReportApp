@@ -223,6 +223,8 @@ namespace BugReportApp
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
+            bool result = false;
+
             switch (viewAddEditValue)
             {
                 case 0: // switch to edit
@@ -230,10 +232,39 @@ namespace BugReportApp
                     UpdateBugReportDisplay();
                     break;
                 case 1: // submit edits
-
+                    result = false;
+                    try
+                    {
+                        result = _bugReportManager.UpdateBugReport(_bugTicketVM, new BugTicket()
+                        {
+                            BugTicketID = _bugTicketID,
+                            BugDate = _bugTicketVM.BugDate,
+                            SubmitID = _loggedInEmployee.EmployeeID,
+                            LastWorkedDate = DateTime.Now,
+                            LastWorkedEmployee = _loggedInEmployee.EmployeeID,
+                            Description = txtDescription.Text,
+                            AreaName = cboBugTicketAreaName.Text,
+                            AssignedTo = int.Parse(cboBugTicketAssignedTo.Text.Remove(cboBugTicketAssignedTo.Text.IndexOf(':'))),
+                            Feature = cboBugTicketFeature.Text,
+                            Status = cboBugTicketStatus.Text,
+                            VersionNumber = cboBugTicketVersionNumber.Text,
+                            Active = true
+                        });
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("There was a problem updating the ticket.", "Update Ticket Error",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    if (result == true)
+                    {
+                        MessageBox.Show("Ticekt was udpated.", "Ticket Updated",
+                            MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.DialogResult = true;
+                    }
                     break;
                 case 2: // submit new ticket
-                    bool result = false;
+                    result = false;
                     try
                     {
                         result = _bugReportManager.AddBugReport(
@@ -251,9 +282,9 @@ namespace BugReportApp
                             VersionNumber = cboBugTicketVersionNumber.Text
                         });
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        MessageBox.Show("There was a problem adding the ticket.Pre\n" + ex.Message, "Add Ticket Error",
+                        MessageBox.Show("There was a problem adding the ticket.", "Add Ticket Error",
                             MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     if (result == true)
